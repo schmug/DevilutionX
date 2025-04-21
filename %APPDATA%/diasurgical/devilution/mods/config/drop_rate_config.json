@@ -1,0 +1,128 @@
+{
+  "maxDropRateMultiplier": 1000.0,
+  "minDropRateMultiplier": 0.1,
+  "modifiers": [
+    {
+      "scope": "global",
+      "modType": "multiplier",
+      "value": 1.2,
+      "context": "always",
+      "priority": 0,
+      "description": "Global 20% increase to all item drop rates"
+    },
+    {
+      "scope": "uniqueItem",
+      "modType": "multiplier",
+      "value": 1.5,
+      "context": "monsterDrop",
+      "priority": 10,
+      "description": "50% increase to unique item drops from monsters"
+    },
+    {
+      "scope": "itemClass",
+      "targetId": "Weapon",
+      "modType": "multiplier",
+      "value": 1.3,
+      "context": "monsterDrop",
+      "priority": 5,
+      "description": "30% increase to weapon drops from monsters"
+    },
+    {
+      "scope": "itemType",
+      "targetId": "Sword",
+      "modType": "multiplier",
+      "value": 1.25,
+      "context": "always",
+      "priority": 5,
+      "description": "25% increase to sword drops"
+    },
+    {
+      "scope": "itemType",
+      "targetId": "Ring",
+      "modType": "multiplier",
+      "value": 3.4,
+      "context": "always",
+      "priority": 5,
+      "description": "240% increase to ring drops"
+    },
+    {
+      "scope": "itemType",
+      "targetId": "Amulet",
+      "modType": "multiplier",
+      "value": 1.4,
+      "context": "always",
+      "priority": 5,
+      "description": "40% increase to amulet drops"
+    },
+    {
+      "scope": "itemClass",
+      "targetId": "Gold",
+      "modType": "multiplier",
+      "value": 10.0,
+      "context": "always",
+      "priority": 5,
+      "description": "1000% increase to gold drops"
+    },
+    {
+      "scope": "global",
+      "modType": "multiplier",
+      "value": 2.0,
+      "context": "always",
+      "priority": 20,
+      "condition": {
+        "difficulty": 2
+      },
+      "description": "Double all drop rates in Hell difficulty"
+    },
+    {
+      "scope": "global",
+      "modType": "multiplier",
+      "value": 1.5,
+      "context": "always",
+      "priority": 20,
+      "condition": {
+        "difficulty": 1
+      },
+      "description": "50% increase to all drop rates in Nightmare difficulty"
+    },
+    {
+      "scope": "global",
+      "modType": "multiplier",
+      "value": 1.5,
+      "context": "always",
+      "priority": 15,
+      "condition": {
+        "multiplayerOnly": true
+      },
+      "description": "50% increase to all drop rates in multiplayer games"
+    },
+    {
+      "scope": "itemClass",
+      "targetId": "Armor",
+      "modType": "multiplier",
+      "value": 1.3,
+      "context": "monsterDrop",
+      "priority": 5,
+      "description": "30% increase to armor drops from monsters"
+    },
+    {
+      "scope": "global",
+      "modType": "multiplier",
+      "value": 1.1,
+      "context": "chestDrop",
+      "priority": 5,
+      "description": "10% increase to all item drops from chests"
+    },
+    {
+      "scope": "global",
+      "modType": "multiplier",
+      "value": 1.2,
+      "context": "monsterDrop",
+      "priority": 5,
+      "condition": {
+        "minMonsterLevel": 20
+      },
+      "description": "20% increase to all drops from high-level monsters (level 20+)"
+    }
+  ]
+}

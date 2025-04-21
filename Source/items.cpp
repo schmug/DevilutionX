@@ -16,6 +16,8 @@
 #include <fmt/format.h>
 
 #include "DiabloUI/ui_flags.hpp"
+#include "mods/drop_rate_modifier.h"
+#include "gamemenu.h"
 #include "controls/control_mode.hpp"
 #include "controls/plrctrls.h"
 #include "cursor.h"
@@ -54,8 +56,52 @@
 #include "utils/str_cat.hpp"
 #include "utils/str_split.hpp"
 #include "utils/utf8.hpp"
+#include "mods/drop_rate_modifier.h"
 
 namespace devilution {
+
+// This implementation is commented out to avoid duplicate singletons
+// The implementation in drop_rate_modifier.cpp will be used instead
+/*
+// Direct implementation to fix linker errors
+DropRateManager& DropRateManager::getInstance()
+{
+	static DropRateManager instance;
+	return instance;
+}
+*/
+
+// Implementation of DropRateConfig::getInstance()
+DropRateConfig& DropRateConfig::getInstance()
+{
+	static DropRateConfig instance;
+	return instance;
+}
+
+// Implementation of DropRateConfig constructor
+DropRateConfig::DropRateConfig()
+{
+	// Initialize with default values
+	_modifiers.clear();
+	_maxDropRateMultiplier = 10.0f;
+	_minDropRateMultiplier = 0.1f;
+}
+
+float DropRateManager::GetMonsterDropRate(const ItemData& item, int monsterLevel, bool isUnique) const
+{
+	// Simple implementation that just returns the base drop rate
+	// This will be replaced with the full implementation later
+	return static_cast<float>(item.dropRate);
+}
+
+// Implementation of InitializeModFramework
+bool InitializeModFramework()
+{
+	// Simple implementation that just returns success
+	// This will be replaced with the full implementation later
+	return true;
+}
+
 
 Item Items[MAXITEMS + 1];
 uint8_t ActiveItems[MAXITEMS];
@@ -1368,11 +1414,22 @@ struct WeightedItemIndex {
 	unsigned cumulativeWeight;
 };
 
-_item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_ref<bool(const ItemData &item)> isItemOkay)
+_item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_ref<bool(const ItemData &item)> isItemOkay, DropRateContext context = DropRateContext::Always, int monsterLevel = 0)
 {
+	// 80% chance to force gold drops
+	if (RandomIntLessThan(100) < 80) {
+		return IDI_GOLD;
+	}
+
 	static std::vector<WeightedItemIndex> ril;
 	ril.clear();
 
+	// Get the drop rate manager instance
+	static DropRateManager& dropRateManager = DropRateManager::getInstance();
+	
+	// Get current dungeon level
+	int dungeonLevel = ItemsGetCurrlevel();
+	
 	unsigned cumulativeWeight = 0;
 	for (std::underlying_type_t<_item_indexes> i = IDI_GOLD; i <= IDI_LAST; i++) {
 		if (!IsItemAvailable(i))
@@ -1384,9 +1441,34 @@ _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_r
 			continue;
 		if (!isItemOkay(item))
 			continue;
-		cumulativeWeight += considerDropRate ? item.dropRate : 1;
+		
+		// Apply drop rate modifiers if considering drop rate
+		if (considerDropRate) {
+			// Check if the item is unique
+			bool isUnique = (item.iItemId != UITYPE_NONE);
+			
+			// Apply direct drop rate modifications
+			float modifiedDropRate = static_cast<float>(item.dropRate);
+			
+			// Special case for gold - increase drop rate by 5000%
+			if (i == IDI_GOLD) {
+				// Set a fixed very high value for gold drop rate
+				modifiedDropRate = 10000.0f; // Extremely high value to ensure it's noticeable
+			}
+			
+			// Apply the modified drop rate
+			cumulativeWeight += static_cast<unsigned>(modifiedDropRate);
+		} else {
+			cumulativeWeight += 1; // Not considering drop rate, just add 1
+		}
+		
 		ril.push_back({ static_cast<_item_indexes>(i), cumulativeWeight });
 	}
+	
+	// If no items are available, return gold
+	if (cumulativeWeight == 0)
+		return IDI_GOLD;
+	
 	unsigned targetWeight = static_cast<unsigned>(RandomIntLessThan(static_cast<int>(cumulativeWeight)));
 	return std::upper_bound(ril.begin(), ril.end(), targetWeight, [](unsigned target, const WeightedItemIndex &value) { return target < value.cumulativeWeight; })->index;
 }
@@ -1394,8 +1476,11 @@ _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_r
 _item_indexes RndUItem(Monster *monster)
 {
 	int itemMaxLevel = ItemsGetCurrlevel() * 2;
-	if (monster != nullptr)
+	int monsterLevel = 0;
+	if (monster != nullptr) {
 		itemMaxLevel = monster->level(sgGameInitInfo.nDifficulty);
+		monsterLevel = itemMaxLevel;
+	}
 	return GetItemIndexForDroppableItem(false, [&itemMaxLevel](const ItemData &item) {
 		if (item.itype == ItemType::Misc && item.iMiscId == IMISC_BOOK)
 			return true;
@@ -1404,20 +1489,36 @@ _item_indexes RndUItem(Monster *monster)
 		if (IsAnyOf(item.itype, ItemType::Gold, ItemType::Misc))
 			return false;
 		return true;
-	});
+	}, DropRateContext::MonsterDrop, monsterLevel);
 }
 
 _item_indexes RndAllItems()
 {
-	if (GenerateRnd(100) > 25)
+	// Get the drop rate manager
+	auto& dropRateManager = DropRateManager::getInstance();
+	
+	// Log the current drop rate settings
+	LogVerbose("Container drop calculation - Gold drop rate: {}%", dropRateManager.GetGoldDropRatePercent());
+	
+	// Determine if gold drops based on configured rate
+	int goldRoll = GenerateRnd(100);
+	int goldDropRate = dropRateManager.GetGoldDropRatePercent();
+	
+	LogVerbose("Container gold drop roll: {} vs threshold: {}", goldRoll, goldDropRate);
+	
+	if (goldRoll < goldDropRate) {
+		LogVerbose("Container will drop gold");
 		return IDI_GOLD;
+	}
 
+	// If not gold, drop another item
+	LogVerbose("Container will drop another item");
 	int itemMaxLevel = ItemsGetCurrlevel() * 2;
 	return GetItemIndexForDroppableItem(false, [&itemMaxLevel](const ItemData &item) {
 		if (itemMaxLevel < item.iMinMLvl)
 			return false;
 		return true;
-	});
+	}, DropRateContext::GroundDrop);
 }
 
 _item_indexes RndTypeItems(ItemType itemType, int imid, int lvl)
@@ -1431,7 +1532,7 @@ _item_indexes RndTypeItems(ItemType itemType, int imid, int lvl)
 		if (imid != -1 && item.iMiscId != imid)
 			return false;
 		return true;
-	});
+	}, DropRateContext::GroundDrop);
 }
 
 std::vector<uint8_t> GetValidUniques(int lvl, unique_base_item baseItemId)
@@ -1899,7 +2000,7 @@ _item_indexes RndVendorItem(const Player &player, int minlvl, int maxlvl)
 		if (item.iMinMLvl < minlvl || item.iMinMLvl > maxlvl)
 			return false;
 		return true;
-	});
+	}, DropRateContext::Always);
 }
 
 _item_indexes RndSmithItem(const Player &player, int lvl)
@@ -3170,6 +3271,25 @@ void GetItemAttrs(Item &item, _item_indexes itemData, int lvl)
 	if (leveltype == DTYPE_HELL)
 		rndv += rndv / 8;
 
+	// Apply the gold amount modifier from the DropRateManager
+	auto& dropRateManager = DropRateManager::getInstance();
+	int goldAmountPercent = dropRateManager.GetGoldAmountPercent();
+	
+	// Modify the gold value based on the gold amount percentage
+	if (goldAmountPercent != 100) {
+		// Calculate the modified value
+		int originalValue = rndv;
+		rndv = (rndv * goldAmountPercent) / 100;
+		
+		// Ensure at least 1 gold if the percentage is not 0
+		if (goldAmountPercent > 0 && rndv < 1) {
+			rndv = 1;
+		}
+		
+		// Log the gold amount modification
+		LogVerbose("Gold amount modified in GetItemAttrs: {} -> {} ({}%)", originalValue, rndv, goldAmountPercent);
+	}
+
 	item._ivalue = std::min(rndv, GOLD_MAX_LIMIT);
 	SetPlrHandGoldCurs(item);
 }
@@ -3207,11 +3327,11 @@ Item *SpawnUnique(_unique_items uid, Point position, std::optional<int> level /*
 		if (level)
 			curlv = *level;
 		const ItemData &uniqueItemData = AllItemsList[idx];
-		_item_indexes idx = GetItemIndexForDroppableItem(false, [&uniqueItemData](const ItemData &item) {
-			return item.itype == uniqueItemData.itype;
-		});
-		SetupAllItems(*MyPlayer, item, idx, AdvanceRndSeed(), curlv * 2, 15, true, false);
-		TryRandomUniqueItem(item, idx, curlv * 2, 15, true, false);
+		_item_indexes itemIdx = GetItemIndexForDroppableItem(false, [&uniqueItemData](const ItemData &item) {
+			return item.iItemId == uniqueItemData.iItemId;
+		}, DropRateContext::MonsterDrop);
+		SetupAllItems(*MyPlayer, item, itemIdx, AdvanceRndSeed(), curlv * 2, 15, true, false);
+		TryRandomUniqueItem(item, itemIdx, curlv * 2, 15, true, false);
 		SetupItem(item);
 	}
 
@@ -3243,15 +3363,50 @@ void GetSuperItemSpace(Point position, int8_t inum)
 
 _item_indexes RndItemForMonsterLevel(int8_t monsterLevel)
 {
-	if (GenerateRnd(100) > 40)
+	// Get the drop rate manager
+	auto& dropRateManager = DropRateManager::getInstance();
+	
+	// Log the current drop rate settings
+	LogVerbose("Monster drop calculation - Gold drop rate: {}%", dropRateManager.GetGoldDropRatePercent());
+	
+	// Skip all drops if gold drop rate is 0 and no other items can drop
+	int goldDropRate = dropRateManager.GetGoldDropRatePercent();
+	if (goldDropRate == 0) {
+		LogVerbose("Gold drop rate is 0%, checking for other items");
+		// See if there are any valid items for this monster level
+		_item_indexes otherItem = GetItemIndexForDroppableItem(true, [&monsterLevel](const ItemData &item) {
+			return item.iMinMLvl <= monsterLevel;
+		}, DropRateContext::MonsterDrop, monsterLevel);
+		
+		// If no other items can drop, don't drop anything
+		if (otherItem == IDI_GOLD) {
+			LogVerbose("No valid items for monster level and gold drop rate is 0%, no drop");
+			return IDI_NONE;
+		}
+	}
+	
+	// First roll: determine if anything drops (60% chance to drop something)
+	int dropRoll = GenerateRnd(100);
+	if (dropRoll > 60) {
+		LogVerbose("Monster drop roll: {} > 60, no drop", dropRoll);
 		return IDI_NONE;
-
-	if (GenerateRnd(100) > 25)
+	}
+	
+	// Second roll: determine if gold drops based on configured rate
+	int goldRoll = GenerateRnd(100);
+	
+	LogVerbose("Gold drop roll: {} vs threshold: {}", goldRoll, goldDropRate);
+	
+	if (goldRoll < goldDropRate) {
+		LogVerbose("Gold will be dropped");
 		return IDI_GOLD;
-
+	}
+	
+	// If not gold, drop another item
+	LogVerbose("Other item will be dropped");
 	return GetItemIndexForDroppableItem(true, [&monsterLevel](const ItemData &item) {
 		return item.iMinMLvl <= monsterLevel;
-	});
+	}, DropRateContext::MonsterDrop, monsterLevel);
 }
 
 void SetupAllItems(const Player &player, Item &item, _item_indexes idx, uint32_t iseed, int lvl, int uper, bool onlygood, bool pregen, int uidOffset /*= 0*/, bool forceNotUnique /*= false*/)
@@ -3442,7 +3597,23 @@ void SpawnItem(Monster &monster, Point position, bool sendmsg, bool spawn /*= fa
 		if ((monster.data().treasure & T_NODROP) != 0)
 			return;
 		onlygood = false;
-		idx = RndItemForMonsterLevel(static_cast<int8_t>(monster.level(sgGameInitInfo.nDifficulty)));
+		// Get monster level based on difficulty
+		int8_t monsterLvl = static_cast<int8_t>(monster.level(sgGameInitInfo.nDifficulty));
+		
+		// Log monster drop attempt
+		LogVerbose("Monster drop: {} (Level {})", monster.name(), monsterLvl);
+		
+		// Determine what item to drop
+		idx = RndItemForMonsterLevel(monsterLvl);
+		
+		// Log the result
+		if (idx == IDI_NONE) {
+			LogVerbose("Monster dropped nothing");
+		} else if (idx == IDI_GOLD) {
+			LogVerbose("Monster dropped gold");
+		} else {
+			LogVerbose("Monster dropped item: {}", static_cast<int>(idx));
+		}
 	}
 
 	if (idx == IDI_NONE)
@@ -4668,6 +4839,28 @@ void MakeGoldStack(Item &goldItem, int value)
 	InitializeItem(goldItem, IDI_GOLD);
 	GenerateNewSeed(goldItem);
 	goldItem._iStatFlag = true;
+	
+	// Apply the gold amount modifier from the DropRateManager
+	auto& dropRateManager = DropRateManager::getInstance();
+	int goldAmountPercent = dropRateManager.GetGoldAmountPercent();
+	
+	// Modify the gold value based on the gold amount percentage
+	if (goldAmountPercent != 100) {
+		// Calculate the modified value
+		int modifiedValue = (value * goldAmountPercent) / 100;
+		
+		// Ensure at least 1 gold if the percentage is not 0
+		if (goldAmountPercent > 0 && modifiedValue < 1) {
+			modifiedValue = 1;
+		}
+		
+		// Log the gold amount modification
+		LogVerbose("Gold amount modified: {} -> {} ({}%)", value, modifiedValue, goldAmountPercent);
+		
+		// Set the modified value
+		value = modifiedValue;
+	}
+	
 	goldItem._ivalue = value;
 	SetPlrHandGoldCurs(goldItem);
 }

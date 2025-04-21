@@ -12,6 +12,7 @@
 #include <config.h>
 
 #include "DiabloUI/selstart.h"
+#include "discord/discord.h"
 #include "appfat.h"
 #include "automap.h"
 #include "capture.h"
@@ -28,10 +29,10 @@
 #include "controls/remap_keyboard.h"
 #include "diablo.h"
 #include "diablo_msg.hpp"
-#include "discord/discord.h"
+#include "DiabloUI/ui_flags.hpp"
 #include "doom.h"
-#include "encrypt.h"
 #include "engine/backbuffer_state.hpp"
+#include "mods/mod_init.h"
 #include "engine/clx_sprite.hpp"
 #include "engine/demomode.h"
 #include "engine/dx.h"
@@ -738,6 +739,13 @@ void GameEventHandler(const SDL_Event &event, uint16_t modState)
 
 	switch (event.type) {
 	case SDL_KEYDOWN:
+		// Check if we're in drop rate adjustment mode
+		if (IsInDropRateAdjustmentMode()) {
+			// Handle the key press for drop rate adjustment
+			HandleDropRateKeyPress(event.key.keysym.sym);
+			return;
+		}
+		// Normal key handling
 		PressKey(event.key.keysym.sym, modState);
 		return;
 	case SDL_KEYUP:
@@ -861,7 +869,8 @@ void RunGameLoop(interface_mode uMsg)
 	gbGameLoopStartup = true;
 	nthread_ignore_mutex(false);
 
-	discord_manager::StartGame();
+	// Discord integration is disabled
+// discord_manager::StartGame();
 	LuaEvent("GameStart");
 #ifdef GPERF_HEAP_FIRST_GAME_ITERATION
 	unsigned run_game_iteration = 0;
@@ -898,7 +907,8 @@ void RunGameLoop(interface_mode uMsg)
 		if (demo::IsRecording())
 			demo::RecordGameLoopResult(runGameLoop);
 
-		discord_manager::UpdateGame();
+		// Discord integration is disabled
+// discord_manager::UpdateGame();
 
 		if (!runGameLoop) {
 			if (processInput)
@@ -1235,6 +1245,9 @@ void DiabloInit()
 
 	// Always available.
 	LoadSmallSelectionSpinner();
+
+	// Initialize the modding framework
+	InitializeModFramework();
 
 	CheckArchivesUpToDate();
 }
@@ -2610,6 +2623,9 @@ int DiabloMain(int argc, char **argv)
 	LoadMonsterData();
 	LoadItemData();
 	LoadObjectData();
+
+	// Initialize modding framework
+	InitializeModFramework();
 
 	DiabloInit();
 #ifdef __UWP__

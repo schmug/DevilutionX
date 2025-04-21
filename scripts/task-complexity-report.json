@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "generatedAt": "2025-04-20T16:11:01.639Z",
+    "tasksAnalyzed": 10,
+    "thresholdScore": 5,
+    "projectName": "Your Project Name",
+    "usedResearch": false
+  },
+  "complexityAnalysis": [
+    {
+      "taskId": 1,
+      "taskTitle": "Analyze DevilutionX Codebase for Mod Integration Points",
+      "complexityScore": 9,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down the codebase analysis task into specific subtasks covering different systems (items, monsters, dungeons), documentation requirements, and technical specification deliverables.",
+      "reasoning": "This is a highly complex task requiring deep understanding of a large codebase. It involves multiple systems analysis, architecture planning, and creating technical specifications. The work is foundational for all other tasks."
+    },
+    {
+      "taskId": 2,
+      "taskTitle": "Implement Item Drop Rate Modification System",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Divide the item drop rate modification system into subtasks covering configuration file format, integration with existing drop mechanics, balance safeguards, testing, and user interface elements.",
+      "reasoning": "This task requires both technical implementation and game design considerations. Creating a configurable system that doesn't break game balance while extending existing mechanics without modifying core code is moderately complex."
+    },
+    {
+      "taskId": 3,
+      "taskTitle": "Design and Implement New Item Prefixes",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Break down the new item prefixes task into design, data structure implementation, integration with existing systems, and testing/balancing subtasks.",
+      "reasoning": "Creating new prefixes requires game design knowledge and technical implementation. The data-driven approach adds complexity, but the scope is contained to a specific feature area with clear deliverables."
+    },
+    {
+      "taskId": 4,
+      "taskTitle": "Design and Implement New Item Suffixes",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Divide the new item suffixes task into design, implementation, integration with prefix system, and testing/balancing subtasks.",
+      "reasoning": "Similar complexity to the prefixes task, with the additional consideration of ensuring suffixes work well with the new prefixes. Leverages the same data-driven approach but requires careful balance testing."
+    },
+    {
+      "taskId": 5,
+      "taskTitle": "Create New Unique Items System",
+      "complexityScore": 8,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the unique items system into data structure design, item creation, integration with drop tables, balance testing, and visual/audio asset management subtasks.",
+      "reasoning": "This task involves complex game design, data structure creation, and integration with multiple existing systems. Creating balanced unique items that feel authentic to the original game requires significant design and technical work."
+    },
+    {
+      "taskId": 6,
+      "taskTitle": "Implement Dungeon Layout Extension System",
+      "complexityScore": 9,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Divide the dungeon layout extension system into analysis of existing algorithms, data format design, generation system implementation, integration points, testing, and performance optimization subtasks.",
+      "reasoning": "Dungeon generation is typically one of the most complex systems in roguelike games. Creating an extension system without modifying core algorithms requires deep understanding of the existing system and careful design to maintain game feel."
+    },
+    {
+      "taskId": 7,
+      "taskTitle": "Design and Implement New Monster Types",
+      "complexityScore": 8,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the new monster types task into data structure design, monster behavior implementation, visual/audio asset creation, spawn integration, and balance testing subtasks.",
+      "reasoning": "Creating new monsters involves multiple disciplines including game design, AI behavior programming, and possibly art integration. The system must handle various monster attributes and behaviors while maintaining game balance."
+    },
+    {
+      "taskId": 8,
+      "taskTitle": "Implement Cross-Platform Compatibility Testing Framework",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Divide the cross-platform testing framework into test suite design, automated testing implementation, platform-specific test cases, reporting system, and integration with CI/CD subtasks.",
+      "reasoning": "Creating a comprehensive testing framework across multiple platforms is technically challenging. It requires understanding platform-specific issues and implementing automated tests that can validate complex game features."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "Implement Multiplayer Compatibility Validation",
+      "complexityScore": 8,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the multiplayer validation task into synchronization testing methodology, client version compatibility system, test scenario development, automated multiplayer testing, and regression testing subtasks.",
+      "reasoning": "Multiplayer testing is inherently complex due to networking, synchronization issues, and the need to test various client combinations. Ensuring all new features work correctly in multiplayer adds significant complexity."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "Create Documentation and Release Package",
+      "complexityScore": 5,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Divide the documentation and release task into user documentation, technical documentation for modders, example configuration creation, and release packaging subtasks.",
+      "reasoning": "While comprehensive, this task is primarily about documentation and packaging rather than technical implementation. The complexity comes from ensuring all features are properly documented and the release package is complete and user-friendly."
+    }
+  ]
+}

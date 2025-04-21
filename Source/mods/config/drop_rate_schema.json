@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DevilutionX Item Drop Rate Configuration",
+  "description": "Configuration schema for modifying item drop rates in DevilutionX",
+  "type": "object",
+  "properties": {
+    "maxDropRateMultiplier": {
+      "type": "number",
+      "description": "Maximum allowed multiplier for drop rates (safeguard)",
+      "minimum": 1.0,
+      "default": 10.0
+    },
+    "minDropRateMultiplier": {
+      "type": "number",
+      "description": "Minimum allowed multiplier for drop rates (safeguard)",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "default": 0.1
+    },
+    "modifiers": {
+      "type": "array",
+      "description": "List of drop rate modifiers",
+      "items": {
+        "type": "object",
+        "required": ["scope", "modType", "value"],
+        "properties": {
+          "scope": {
+            "type": "string",
+            "description": "The scope of items this modifier applies to",
+            "enum": ["global", "itemType", "itemClass", "itemId", "uniqueItem"]
+          },
+          "targetId": {
+            "type": "string",
+            "description": "The ID of the target (required for all scopes except global)"
+          },
+          "context": {
+            "type": "string",
+            "description": "When this modifier should be applied",
+            "enum": ["always", "monsterDrop", "chestDrop", "groundDrop", "questReward"],
+            "default": "always"
+          },
+          "modType": {
+            "type": "string",
+            "description": "How the drop rate should be modified",
+            "enum": ["multiplier", "addFlat", "setAbsolute"]
+          },
+          "value": {
+            "type": "number",
+            "description": "The value to use for modification"
+          },
+          "priority": {
+            "type": "integer",
+            "description": "Priority of this modifier (higher values are applied first)",
+            "default": 0
+          },
+          "condition": {
+            "type": "object",
+            "description": "Conditions for when this modifier applies",
+            "properties": {
+              "minMonsterLevel": {
+                "type": "integer",
+                "description": "Minimum monster level for this modifier to apply"
+              },
+              "maxMonsterLevel": {
+                "type": "integer",
+                "description": "Maximum monster level for this modifier to apply"
+              },
+              "minDungeonLevel": {
+                "type": "integer",
+                "description": "Minimum dungeon level for this modifier to apply"
+              },
+              "maxDungeonLevel": {
+                "type": "integer",
+                "description": "Maximum dungeon level for this modifier to apply"
+              },
+              "difficulty": {
+                "type": "integer",
+                "description": "Game difficulty (0=Normal, 1=Nightmare, 2=Hell)",
+                "enum": [0, 1, 2]
+              },
+              "multiplayerOnly": {
+                "type": "boolean",
+                "description": "Whether this modifier only applies in multiplayer games"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

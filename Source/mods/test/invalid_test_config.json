@@ -1,0 +1,60 @@
+{
+  "maxDropRateMultiplier": 5.0,
+  "minDropRateMultiplier": 10.0,
+  "modifiers": [
+    {
+      "scope": "global",
+      "modType": "multiplier",
+      "value": -0.5,
+      "context": "always",
+      "priority": 0,
+      "description": "Invalid negative multiplier"
+    },
+    {
+      "scope": "itemType",
+      "modType": "multiplier",
+      "value": 1.5,
+      "context": "monsterDrop",
+      "priority": 10,
+      "description": "Missing targetId for itemType scope"
+    },
+    {
+      "scope": "itemClass",
+      "targetId": "InvalidClass",
+      "modType": "multiplier",
+      "value": 2.0,
+      "context": "always",
+      "priority": 5,
+      "description": "Invalid item class"
+    },
+    {
+      "scope": "global",
+      "modType": "multiplier",
+      "value": 100.0,
+      "context": "always",
+      "priority": 20,
+      "description": "Extremely high multiplier that should trigger a warning"
+    },
+    {
+      "scope": "global",
+      "modType": "setAbsolute",
+      "value": -10.0,
+      "context": "always",
+      "priority": 15,
+      "description": "Invalid negative absolute value"
+    },
+    {
+      "scope": "global",
+      "modType": "multiplier",
+      "value": 2.0,
+      "context": "always",
+      "priority": 25,
+      "condition": {
+        "minMonsterLevel": 30,
+        "maxMonsterLevel": 10,
+        "difficulty": 5
+      },
+      "description": "Invalid condition (min > max and invalid difficulty)"
+    }
+  ]
+}
