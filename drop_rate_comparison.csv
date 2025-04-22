@@ -1,0 +1,33 @@
+Item Type,Base Drop Rate,Setting,Before Formula,Before Multiplier,Before Final Rate,After Formula,After Multiplier,After Final Rate
+Gold,N/A,Gold Drop Rate 0%,Fixed high value,N/A,10000,If gold drop rate = 0 then 0 else goldDropRate * 100,0,0
+Gold,N/A,Gold Drop Rate 50%,Fixed high value,N/A,10000,goldDropRate * 100,5000,5000
+Gold,N/A,Gold Drop Rate 100%,Fixed high value,N/A,10000,goldDropRate * 100,10000,10000
+Normal Item,10,Item Type Normal,base * 3.0 if normal,3.0,30,base * 3.0 if normal,3.0,30
+Magic Item,10,Item Type Normal,base,1.0,10,base,1.0,10
+Rare Item,10,Item Type Normal,base,1.0,10,base,1.0,10
+Unique Item,10,Item Type Normal,base,1.0,10,base,1.0,10
+Normal Item,10,Item Type Magic,base,1.0,10,base,1.0,10
+Magic Item,10,Item Type Magic,base * 3.0 if magical,3.0,30,base * 3.0 if magical,3.0,30
+Rare Item,10,Item Type Magic,base,1.0,10,base,1.0,10
+Unique Item,10,Item Type Magic,base,1.0,10,base,1.0,10
+Normal Item,10,Item Type Rare,base,1.0,10,base,1.0,10
+Magic Item,10,Item Type Rare,base,1.0,10,base,1.0,10
+Rare Item,10,Item Type Rare,base * 3.0 if rare,3.0,30,base * 3.0 if rare,3.0,30
+Unique Item,10,Item Type Rare,base,1.0,10,base,1.0,10
+Normal Item,10,Item Type Unique,base,1.0,10,base * 0.2 if not unique,0.2,2
+Magic Item,10,Item Type Unique,base,1.0,10,base * 0.2 if not unique,0.2,2
+Rare Item,10,Item Type Unique,base,1.0,10,base * 0.2 if not unique,0.2,2
+Unique Item,10,Item Type Unique,base * 3.0 if unique,3.0,30,base * 10.0 if unique,10.0,100
+Normal Item,10,Quality 0%,base * (1 + (50-0)/50 * 4) if normal,5.0,50,base * (1 + (50-0)/50 * 4) if normal,5.0,50
+Magic Item,10,Quality 0%,base,1.0,10,base,1.0,10
+Rare Item,10,Quality 0%,base,1.0,10,base,1.0,10
+Unique Item,10,Quality 0%,base,1.0,10,base,1.0,10
+Normal Item,10,Quality 50%,base,1.0,10,base,1.0,10
+Magic Item,10,Quality 50%,base,1.0,10,base,1.0,10
+Rare Item,10,Quality 50%,base,1.0,10,base,1.0,10
+Unique Item,10,Quality 50%,base,1.0,10,base,1.0,10
+Normal Item,10,Quality 100%,base,1.0,10,base,1.0,10
+Magic Item,10,Quality 100%,base * (1 + (100-50)/50 * 4) * 0.5 if magical,3.0,30,base * (1 + (100-50)/50 * 4) * 0.5 if magical,3.0,30
+Rare Item,10,Quality 100%,base * (1 + (100-50)/50 * 4) * 0.75 if rare,4.5,45,base * (1 + (100-50)/50 * 4) * 0.75 if rare,4.5,45
+Unique Item,10,Quality 100%,base * (1 + (100-50)/50 * 4) if unique,5.0,50,base * (1 + (100-50)/50 * 4) * 3.0 if unique,15.0,150
+Unique Item,10,Unique + Quality 100%,base * 3.0 * (1 + (100-50)/50 * 4),15.0,150,base * 10.0 * (1 + (100-50)/50 * 4) * 3.0,150.0,1500

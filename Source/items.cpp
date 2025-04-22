@@ -1461,10 +1461,16 @@ _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_r
 			// Apply direct drop rate modifications
 			float modifiedDropRate = static_cast<float>(item.dropRate);
 			
-			// Special case for gold - increase drop rate by 5000%
+			// Special case for gold - only apply if gold drop rate is not 0
 			if (i == IDI_GOLD) {
-				// Set a fixed very high value for gold drop rate
-				modifiedDropRate = 10000.0f; // Extremely high value to ensure it's noticeable
+				int goldDropRate = dropRateManager.GetGoldDropRatePercent();
+				if (goldDropRate == 0) {
+					// If gold drop rate is 0%, set drop rate to 0
+					modifiedDropRate = 0.0f;
+				} else {
+					// Otherwise use a normal value proportional to the gold drop rate
+					modifiedDropRate = static_cast<float>(goldDropRate) * 100.0f;
+				}
 			}
 			
 			// Apply item type preference modifier
@@ -1489,9 +1495,12 @@ _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_r
 					}
 					break;
 				case DropRateManager::ItemType::Unique:
-					// Prefer unique items
+					// Prefer unique items - use a much higher multiplier to make them more common
 					if (isUnique) {
-						modifiedDropRate *= 3.0f;
+						modifiedDropRate *= 10.0f;
+					} else {
+						// Reduce chance of non-unique items
+						modifiedDropRate *= 0.2f;
 					}
 					break;
 				default:
@@ -1503,7 +1512,7 @@ _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_r
 				// Higher quality means better items (unique, high value, special properties)
 				float qualityMultiplier = 1.0f + ((itemQualityPercent - 50) / 50.0f) * 4.0f;
 				if (isUnique) {
-					modifiedDropRate *= qualityMultiplier;
+					modifiedDropRate *= (qualityMultiplier * 3.0f);
 				} else if (item.iValue > 5000) {
 					// High value items
 					modifiedDropRate *= (qualityMultiplier * 0.75f);
@@ -1574,20 +1583,25 @@ _item_indexes RndAllItems()
 	}
 	
 	// Determine if gold drops based on configured rate
-	int goldRoll = GenerateRnd(100);
 	int goldDropRate = dropRateManager.GetGoldDropRatePercent();
 	
-	LogVerbose("Container gold drop roll: {} vs threshold: {}", goldRoll, goldDropRate);
-	
-	if (goldRoll < goldDropRate) {
-		LogVerbose("Container will drop gold");
-		return IDI_GOLD;
+	// If gold drop rate is 0%, never drop gold
+	if (goldDropRate == 0) {
+		LogVerbose("Gold drop rate is 0%, skipping gold drop");
+	} else {
+		int goldRoll = GenerateRnd(100);
+		LogVerbose("Container gold drop roll: {} vs threshold: {}", goldRoll, goldDropRate);
+		
+		if (goldRoll < goldDropRate) {
+			LogVerbose("Container will drop gold");
+			return IDI_GOLD;
+		}
 	}
 
 	// If not gold, drop another item
 	LogVerbose("Container will drop another item");
 	int itemMaxLevel = ItemsGetCurrlevel() * 2;
-	return GetItemIndexForDroppableItem(false, [&itemMaxLevel](const ItemData &item) {
+	return GetItemIndexForDroppableItem(true, [&itemMaxLevel](const ItemData &item) {
 		if (itemMaxLevel < item.iMinMLvl)
 			return false;
 		return true;
