@@ -20,6 +20,15 @@ namespace devilution {
  */
 class DropRateManager {
 public:
+	// Item type enum for drop rate settings
+	enum class ItemType {
+		Normal = 0,
+		Magic = 1,
+		Rare = 2,
+		Unique = 3,
+		Max = 4
+	};
+
 	// Ensure this is the only implementation of getInstance() in the codebase
 	// This is declared inline to prevent multiple definitions
 	static inline DropRateManager& getInstance() {
@@ -78,6 +87,68 @@ public:
 	}
 	
 	/**
+	 * @brief Get the current item drop rate percentage
+	 * @return The item drop rate percentage (0-100)
+	 */
+	int GetItemDropRatePercent() const { return itemDropRatePercent; }
+	
+	/**
+	 * @brief Set the item drop rate percentage
+	 * @param percent The item drop rate percentage (0-100)
+	 */
+	void SetItemDropRatePercent(int percent)
+	{
+		// Clamp the value to 0-100 range
+		if (percent < 0) percent = 0;
+		if (percent > 100) percent = 100;
+		
+		// Set the value
+		itemDropRatePercent = percent;
+		
+		// Log the change
+		LogVerbose("Item drop rate set to {}%", itemDropRatePercent);
+	}
+	
+	/**
+	 * @brief Get the current item type preference
+	 * @return The item type preference (0-3)
+	 */
+	ItemType GetItemTypePreference() const { return itemTypePreference; }
+	
+	/**
+	 * @brief Set the item type preference
+	 * @param type The item type preference (0-3)
+	 */
+	void SetItemTypePreference(ItemType type)
+	{
+		itemTypePreference = type;
+		LogVerbose("Item type preference set to {}", static_cast<int>(itemTypePreference));
+	}
+	
+	/**
+	 * @brief Get the current item quality percentage
+	 * @return The item quality percentage (0-100)
+	 */
+	int GetItemQualityPercent() const { return itemQualityPercent; }
+	
+	/**
+	 * @brief Set the item quality percentage
+	 * @param percent The item quality percentage (0-100)
+	 */
+	void SetItemQualityPercent(int percent)
+	{
+		// Clamp the value to 0-100 range
+		if (percent < 0) percent = 0;
+		if (percent > 100) percent = 100;
+		
+		// Set the value
+		itemQualityPercent = percent;
+		
+		// Log the change
+		LogVerbose("Item quality set to {}%", itemQualityPercent);
+	}
+	
+	/**
 	 * @brief Reset all drop rates to default values
 	 */
 	void ResetDropRatesToDefaults()
@@ -88,10 +159,21 @@ public:
 		// Reset gold amount to default
 		goldAmountPercent = 100;
 		
-		// Log the reset
+		// Reset item drop rate to default
+		itemDropRatePercent = 60;
+		
+		// Reset item type preference to default
+		itemTypePreference = ItemType::Normal;
+		
+		// Reset item quality to default
+		itemQualityPercent = 50;
+		
 		LogVerbose("Drop rates reset to defaults");
 		LogVerbose("Gold drop rate: {}%", goldDropRatePercent);
 		LogVerbose("Gold amount: {}%", goldAmountPercent);
+		LogVerbose("Item drop rate: {}%", itemDropRatePercent);
+		LogVerbose("Item type preference: {}", static_cast<int>(itemTypePreference));
+		LogVerbose("Item quality: {}%", itemQualityPercent);
 		
 		// Note: We've removed the SaveSettings call for now to focus on core functionality
 	}
@@ -161,6 +243,12 @@ private:
 	// Dynamic drop rate settings
 	int goldDropRatePercent = 20; // Default 20% gold drop rate
 	int goldAmountPercent = 100; // Default 100% gold amount
+	int itemDropRatePercent = 60; // Default 60% item drop rate
+	ItemType itemTypePreference = ItemType::Normal; // Default normal item type preference
+	int itemQualityPercent = 50; // Default 50% item quality
+	
+	// Configuration loading and saving
+	bool LoadConfig(const std::string& configPath, DropRateConfig& config);
 	
 	// We're not implementing persistence methods for now to focus on the core functionality
 };

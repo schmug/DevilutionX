@@ -1416,17 +1416,28 @@ struct WeightedItemIndex {
 
 _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_ref<bool(const ItemData &item)> isItemOkay, DropRateContext context = DropRateContext::Always, int monsterLevel = 0)
 {
-	// 80% chance to force gold drops
-	if (RandomIntLessThan(100) < 80) {
-		return IDI_GOLD;
+	// Get the drop rate manager instance
+	static DropRateManager& dropRateManager = DropRateManager::getInstance();
+	
+	// Check if we should apply item type and quality preferences
+	auto itemTypePreference = dropRateManager.GetItemTypePreference();
+	int itemQualityPercent = dropRateManager.GetItemQualityPercent();
+	
+	// Log the item type and quality settings
+	LogVerbose("Item selection - Type preference: {}, Quality: {}%", 
+		static_cast<int>(itemTypePreference), itemQualityPercent);
+	
+	// If we're not considering drop rates, use the old logic with 80% chance for gold
+	if (!considerDropRate) {
+		// 80% chance to force gold drops
+		if (RandomIntLessThan(100) < 80) {
+			return IDI_GOLD;
+		}
 	}
 
 	static std::vector<WeightedItemIndex> ril;
 	ril.clear();
 
-	// Get the drop rate manager instance
-	static DropRateManager& dropRateManager = DropRateManager::getInstance();
-	
 	// Get current dungeon level
 	int dungeonLevel = ItemsGetCurrlevel();
 	
@@ -1454,6 +1465,59 @@ _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_r
 			if (i == IDI_GOLD) {
 				// Set a fixed very high value for gold drop rate
 				modifiedDropRate = 10000.0f; // Extremely high value to ensure it's noticeable
+			}
+			
+			// Apply item type preference modifier
+			switch (itemTypePreference) {
+				case DropRateManager::ItemType::Normal:
+					// Prefer normal items (non-magical, non-unique)
+					if (!isUnique) {
+						modifiedDropRate *= 3.0f;
+					}
+					break;
+				case DropRateManager::ItemType::Magic:
+					// Prefer magical items
+					// In this game, magical items are those with special properties
+					if (!HasNoneOf(item.iFlags, ~ItemSpecialEffect::None) && !isUnique) {
+						modifiedDropRate *= 3.0f;
+					}
+					break;
+				case DropRateManager::ItemType::Rare:
+					// Prefer rare items - these are items with high value
+					if (item.iValue > 5000 && !isUnique) {
+						modifiedDropRate *= 3.0f;
+					}
+					break;
+				case DropRateManager::ItemType::Unique:
+					// Prefer unique items
+					if (isUnique) {
+						modifiedDropRate *= 3.0f;
+					}
+					break;
+				default:
+					break;
+			}
+			
+			// Apply item quality modifier
+			if (itemQualityPercent > 50) {
+				// Higher quality means better items (unique, high value, special properties)
+				float qualityMultiplier = 1.0f + ((itemQualityPercent - 50) / 50.0f) * 4.0f;
+				if (isUnique) {
+					modifiedDropRate *= qualityMultiplier;
+				} else if (item.iValue > 5000) {
+					// High value items
+					modifiedDropRate *= (qualityMultiplier * 0.75f);
+				} else if (!HasNoneOf(item.iFlags, ~ItemSpecialEffect::None)) {
+					// Items with special properties
+					modifiedDropRate *= (qualityMultiplier * 0.5f);
+				}
+			} else if (itemQualityPercent < 50) {
+				// Lower quality means worse items (normal)
+				float qualityMultiplier = 1.0f + ((50 - itemQualityPercent) / 50.0f) * 4.0f;
+				if (!isUnique && HasNoneOf(item.iFlags, ~ItemSpecialEffect::None) && item.iValue < 1000) {
+					// Basic items with no special properties and low value
+					modifiedDropRate *= qualityMultiplier;
+				}
 			}
 			
 			// Apply the modified drop rate
@@ -1498,7 +1562,16 @@ _item_indexes RndAllItems()
 	auto& dropRateManager = DropRateManager::getInstance();
 	
 	// Log the current drop rate settings
-	LogVerbose("Container drop calculation - Gold drop rate: {}%", dropRateManager.GetGoldDropRatePercent());
+	LogVerbose("Container drop calculation - Gold drop rate: {}%, Item drop rate: {}%", 
+		dropRateManager.GetGoldDropRatePercent(), dropRateManager.GetItemDropRatePercent());
+	
+	// First roll: determine if anything drops based on the item drop rate setting
+	int itemDropRate = dropRateManager.GetItemDropRatePercent();
+	int dropRoll = GenerateRnd(100);
+	if (dropRoll > itemDropRate) {
+		LogVerbose("Container drop roll: {} > {}, no drop", dropRoll, itemDropRate);
+		return IDI_NONE;
+	}
 	
 	// Determine if gold drops based on configured rate
 	int goldRoll = GenerateRnd(100);
@@ -3367,7 +3440,8 @@ _item_indexes RndItemForMonsterLevel(int8_t monsterLevel)
 	auto& dropRateManager = DropRateManager::getInstance();
 	
 	// Log the current drop rate settings
-	LogVerbose("Monster drop calculation - Gold drop rate: {}%", dropRateManager.GetGoldDropRatePercent());
+	LogVerbose("Monster drop calculation - Gold drop rate: {}%, Item drop rate: {}%", 
+		dropRateManager.GetGoldDropRatePercent(), dropRateManager.GetItemDropRatePercent());
 	
 	// Skip all drops if gold drop rate is 0 and no other items can drop
 	int goldDropRate = dropRateManager.GetGoldDropRatePercent();
@@ -3385,10 +3459,11 @@ _item_indexes RndItemForMonsterLevel(int8_t monsterLevel)
 		}
 	}
 	
-	// First roll: determine if anything drops (60% chance to drop something)
+	// First roll: determine if anything drops based on the item drop rate setting
+	int itemDropRate = dropRateManager.GetItemDropRatePercent();
 	int dropRoll = GenerateRnd(100);
-	if (dropRoll > 60) {
-		LogVerbose("Monster drop roll: {} > 60, no drop", dropRoll);
+	if (dropRoll > itemDropRate) {
+		LogVerbose("Monster drop roll: {} > {}, no drop", dropRoll, itemDropRate);
 		return IDI_NONE;
 	}
 	

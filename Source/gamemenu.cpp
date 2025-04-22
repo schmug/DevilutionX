@@ -49,11 +49,19 @@ void GamemenuSpeed(bool bActivate);
 void GamemenuDropRateModifiers(bool bActivate);
 void GamemenuGoldDropRate(bool bActivate);
 void GamemenuGoldAmount(bool bActivate);
+void GamemenuItemDropRate(bool bActivate);
+void GamemenuItemType(bool bActivate);
+void GamemenuItemQuality(bool bActivate);
 void GamemenuResetDropRates(bool bActivate);
 void GamemenuGetGoldDropRate();
 void GamemenuGetGoldAmount();
+void GamemenuGetItemDropRate();
+void GamemenuGetItemType();
+void GamemenuGetItemQuality();
 int GamemenuSliderGoldDropRate();
 int GamemenuSliderGoldAmount();
+int GamemenuSliderItemDropRate();
+int GamemenuSliderItemQuality();
 
 /** Contains the game menu items of the single player menu. */
 TMenuItem sgSingleMenu[] = {
@@ -195,6 +203,9 @@ TMenuItem sgDropRateMenu[] = {
 	// dwFlags,                     pszStr,                  fnMenu
 	{ GMENU_ENABLED | GMENU_SLIDER, N_("Gold Drop Rate"),    &GamemenuGoldDropRate },
 	{ GMENU_ENABLED | GMENU_SLIDER, N_("Gold Amount"),       &GamemenuGoldAmount   },
+	{ GMENU_ENABLED | GMENU_SLIDER, N_("Item Drop Rate"),    &GamemenuItemDropRate },
+	{ GMENU_ENABLED               , N_("Item Type"),        &GamemenuItemType     },
+	{ GMENU_ENABLED | GMENU_SLIDER, N_("Item Quality"),     &GamemenuItemQuality  },
 	{ GMENU_ENABLED               , N_("Reset to Default"), &GamemenuResetDropRates },
 	{ GMENU_ENABLED               , N_("Previous Menu"),    &GamemenuPrevious     },
 	{ GMENU_ENABLED               , nullptr,                nullptr               },
@@ -214,6 +225,16 @@ int GamemenuSliderGoldDropRate()
 int GamemenuSliderGoldAmount()
 {
 	return gmenu_slider_get(&sgDropRateMenu[1], 0, 100);
+}
+
+int GamemenuSliderItemDropRate()
+{
+	return gmenu_slider_get(&sgDropRateMenu[2], 0, 100);
+}
+
+int GamemenuSliderItemQuality()
+{
+	return gmenu_slider_get(&sgDropRateMenu[4], 0, 100);
 }
 
 void GamemenuOptions(bool /*bActivate*/)
@@ -350,6 +371,9 @@ void GamemenuDropRateModifiers(bool bActivate)
 	// Initialize the drop rate menu
 	GamemenuGetGoldDropRate();
 	GamemenuGetGoldAmount();
+	GamemenuGetItemDropRate();
+	GamemenuGetItemType();
+	GamemenuGetItemQuality();
 	
 	// Display the menu
 	gmenu_set_items(sgDropRateMenu, nullptr);
@@ -404,6 +428,132 @@ void GamemenuGoldAmount(bool bActivate)
 	PlaySFX(SfxID::MenuMove);
 }
 
+// Function to get the current item drop rate
+void GamemenuGetItemDropRate()
+{
+	auto& manager = DropRateManager::getInstance();
+	int currentRate = manager.GetItemDropRatePercent();
+	
+	// Set the slider to the current value
+	gmenu_slider_steps(&sgDropRateMenu[2], 100);
+	gmenu_slider_set(&sgDropRateMenu[2], 0, 100, currentRate);
+	
+	// Log the current rate for debugging
+	LogInfo("GamemenuGetItemDropRate: Current item drop rate is {}%", currentRate);
+}
+
+// Function to get the current item type preference
+void GamemenuGetItemType()
+{
+	auto& manager = DropRateManager::getInstance();
+	auto currentType = manager.GetItemTypePreference();
+	
+	// Update the menu text based on the current item type
+	switch (currentType) {
+		case DropRateManager::ItemType::Normal:
+			sgDropRateMenu[3].pszStr = _("Item Type: Normal").data();
+			break;
+		case DropRateManager::ItemType::Magic:
+			sgDropRateMenu[3].pszStr = _("Item Type: Magic").data();
+			break;
+		case DropRateManager::ItemType::Rare:
+			sgDropRateMenu[3].pszStr = _("Item Type: Rare").data();
+			break;
+		case DropRateManager::ItemType::Unique:
+			sgDropRateMenu[3].pszStr = _("Item Type: Unique").data();
+			break;
+		default:
+			sgDropRateMenu[3].pszStr = _("Item Type: Normal").data();
+			break;
+	}
+	
+	// Log the current type for debugging
+	LogInfo("GamemenuGetItemType: Current item type is {}", static_cast<int>(currentType));
+}
+
+// Function to get the current item quality
+void GamemenuGetItemQuality()
+{
+	auto& manager = DropRateManager::getInstance();
+	int currentQuality = manager.GetItemQualityPercent();
+	
+	// Set the slider to the current value
+	gmenu_slider_steps(&sgDropRateMenu[4], 100);
+	gmenu_slider_set(&sgDropRateMenu[4], 0, 100, currentQuality);
+	
+	// Log the current quality for debugging
+	LogInfo("GamemenuGetItemQuality: Current item quality is {}%", currentQuality);
+}
+
+// Handler for the Item Drop Rate slider
+void GamemenuItemDropRate(bool bActivate)
+{
+	auto& manager = DropRateManager::getInstance();
+	
+	if (bActivate) {
+		// Toggle between 0% and 100% when activated
+		int currentRate = manager.GetItemDropRatePercent();
+		int newRate = (currentRate > 0) ? 0 : 100;
+		manager.SetItemDropRatePercent(newRate);
+	} else {
+		// Get the slider value and update the drop rate
+		int rate = GamemenuSliderItemDropRate();
+		manager.SetItemDropRatePercent(rate);
+	}
+	
+	// Update the slider
+	GamemenuGetItemDropRate();
+	
+	// Play a sound effect for feedback
+	PlaySFX(SfxID::MenuMove);
+}
+
+// Handler for the Item Type selector
+void GamemenuItemType(bool bActivate)
+{
+	if (!bActivate)
+		return;
+	
+	auto& manager = DropRateManager::getInstance();
+	auto currentType = manager.GetItemTypePreference();
+	
+	// Cycle through the item types
+	auto newType = static_cast<DropRateManager::ItemType>(
+		(static_cast<int>(currentType) + 1) % static_cast<int>(DropRateManager::ItemType::Max)
+	);
+	
+	manager.SetItemTypePreference(newType);
+	
+	// Update the menu text
+	GamemenuGetItemType();
+	
+	// Play a sound effect for feedback
+	PlaySFX(SfxID::MenuMove);
+}
+
+// Handler for the Item Quality slider
+void GamemenuItemQuality(bool bActivate)
+{
+	auto& manager = DropRateManager::getInstance();
+	
+	if (bActivate) {
+		// Toggle between 0% and 100% when activated
+		int currentQuality = manager.GetItemQualityPercent();
+		int newQuality = (currentQuality > 0) ? 0 : 100;
+		manager.SetItemQualityPercent(newQuality);
+	} else {
+		// Get the slider value and update the quality
+		int quality = GamemenuSliderItemQuality();
+		manager.SetItemQualityPercent(quality);
+	}
+	
+	// Update the slider
+	GamemenuGetItemQuality();
+	
+	// Play a sound effect for feedback
+	PlaySFX(SfxID::MenuMove);
+}
+
 // Handler for the Reset to Default button
 void GamemenuResetDropRates(bool bActivate)
 {
@@ -414,9 +564,12 @@ void GamemenuResetDropRates(bool bActivate)
 	auto& manager = DropRateManager::getInstance();
 	manager.ResetDropRatesToDefaults();
 	
-	// Update the sliders
+	// Update the sliders and selectors
 	GamemenuGetGoldDropRate();
 	GamemenuGetGoldAmount();
+	GamemenuGetItemDropRate();
+	GamemenuGetItemType();
+	GamemenuGetItemQuality();
 	
 	// Log the reset
 	LogInfo("GamemenuResetDropRates: Reset drop rates to defaults");
