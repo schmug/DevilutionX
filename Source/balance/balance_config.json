@@ -1,0 +1,99 @@
+{
+  "testScenarios": [
+    {
+      "name": "Early Game",
+      "description": "Player just starting out with basic gear",
+      "playerLevel": 1.0,
+      "gearLevel": 5.0,
+      "monsterTypes": ["MT_ZOMBIE", "MT_FALLEN", "MT_SKELETON"],
+      "numRounds": 10
+    },
+    {
+      "name": "Mid Game",
+      "description": "Player with moderate gear progression",
+      "playerLevel": 15.0,
+      "gearLevel": 30.0,
+      "monsterTypes": ["MT_GOLEM", "MT_SUCCUBUS", "MT_BALROG"],
+      "numRounds": 15
+    },
+    {
+      "name": "Late Game",
+      "description": "Player with high-end gear",
+      "playerLevel": 30.0,
+      "gearLevel": 75.0,
+      "monsterTypes": ["MT_DIABLO", "MT_BLACKKNIGHT", "MT_COUNSELOR"],
+      "numRounds": 20
+    },
+    {
+      "name": "Gear Spike",
+      "description": "Player with gear much better than expected for their level",
+      "playerLevel": 10.0,
+      "gearLevel": 50.0,
+      "monsterTypes": ["MT_GOLEM", "MT_SUCCUBUS", "MT_BALROG"],
+      "numRounds": 15
+    },
+    {
+      "name": "Gear Deficit",
+      "description": "Player with gear much worse than expected for their level",
+      "playerLevel": 25.0,
+      "gearLevel": 15.0,
+      "monsterTypes": ["MT_GOLEM", "MT_SUCCUBUS", "MT_BALROG"],
+      "numRounds": 15
+    }
+  ],
+  "balanceTargets": {
+    "playerSurvivalRate": {
+      "min": 0.3,
+      "max": 0.8,
+      "optimal": 0.5
+    },
+    "timeToKill": {
+      "min": 5.0,
+      "max": 15.0,
+      "optimal": 10.0
+    },
+    "difficultyLevel": {
+      "min": 0.5,
+      "max": 2.0,
+      "optimal": 1.0
+    }
+  },
+  "gearScoring": {
+    "qualityMultipliers": {
+      "normal": 1.0,
+      "magic": 1.5,
+      "rare": 2.0,
+      "unique": 3.0,
+      "set": 3.5
+    },
+    "affixWeights": {
+      "damage": 1.0,
+      "attack": 0.8,
+      "defense": 0.7,
+      "resistance": 0.6,
+      "health": 0.5,
+      "mana": 0.4,
+      "regeneration": 0.3,
+      "special": 1.2
+    }
+  },
+  "monsterScaling": {
+    "healthScalingFactor": 0.5,
+    "damageScalingFactor": 0.3,
+    "acScalingFactor": 0.2,
+    "experienceScalingFactor": 0.4
+  },
+  "difficultyTransition": {
+    "smoothingFactor": 0.2,
+    "transitionSpeed": 0.1,
+    "minDifficulty": 0.1,
+    "maxDifficulty": 5.0
+  },
+  "adjustmentFactors": {
+    "gearQualityMultiplier": 0.1,
+    "monsterHealthScaling": 0.15,
+    "monsterDamageScaling": 0.1,
+    "difficultySmoothing": 0.2,
+    "transitionSpeed": 0.2
+  }
+}

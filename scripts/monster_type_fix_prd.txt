@@ -1,0 +1,36 @@
+# Monster Type 138 Crash Fix PRD
+
+## Overview
+DevilutionX is experiencing a crash with the error message "ERROR: AddMonsterType: Invalid monster type: 138" followed by "Invalid monster type". This issue needs to be fixed to prevent the game from crashing when encountering monster type 138.
+
+## Problem Statement
+The game crashes when attempting to add a monster with type ID 138. The code in `AddMonsterType` function validates monster types and rejects any that are outside the valid range (0 to MonstersData.size()-1). However, there's a comment in the `IsGolem` function suggesting that both monster types 138 and 139 should be handled as special cases for Golems, but the implementation only handles MT_GOLEM (259) and type 139.
+
+## Requirements
+
+### Functional Requirements
+1. Fix the crash when the game encounters monster type 138
+2. Ensure proper handling of monster type 138 as a Golem type
+3. Maintain compatibility with existing game mechanics
+4. Add proper validation and error handling for monster types
+5. Add unit tests to verify the fix works correctly
+
+### Technical Requirements
+1. Update the `IsGolem` function to properly handle monster type 138
+2. Modify the `AddMonsterType` function to correctly process monster type 138
+3. Add appropriate logging for debugging purposes
+4. Ensure no regressions in existing functionality
+5. Implement unit tests to validate the fix
+
+## Success Criteria
+1. The game no longer crashes when encountering monster type 138
+2. All unit tests pass
+3. No new bugs or regressions are introduced
+4. The fix is minimal and focused on the specific issue
+
+## Implementation Approach
+1. Create unit tests to reproduce the issue
+2. Fix the `IsGolem` function to properly handle monster type 138
+3. Update the `AddMonsterType` function as needed
+4. Verify the fix with unit tests
+5. Test the fix in the actual game environment

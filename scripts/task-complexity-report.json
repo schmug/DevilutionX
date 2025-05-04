@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2025-04-20T16:11:01.639Z",
-    "tasksAnalyzed": 10,
+    "generatedAt": "2025-04-27T20:02:26.915Z",
+    "tasksAnalyzed": 8,
     "thresholdScore": 5,
     "projectName": "Your Project Name",
     "usedResearch": false
@@ -9,83 +9,67 @@
   "complexityAnalysis": [
     {
       "taskId": 1,
-      "taskTitle": "Analyze DevilutionX Codebase for Mod Integration Points",
-      "complexityScore": 9,
-      "recommendedSubtasks": 6,
-      "expansionPrompt": "Break down the codebase analysis task into specific subtasks covering different systems (items, monsters, dungeons), documentation requirements, and technical specification deliverables.",
-      "reasoning": "This is a highly complex task requiring deep understanding of a large codebase. It involves multiple systems analysis, architecture planning, and creating technical specifications. The work is foundational for all other tasks."
+      "taskTitle": "Set up development environment with both build configurations",
+      "complexityScore": 4,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Break down the process of setting up a development environment for DevilutionX with both Release and RelWithDebInfo configurations, including repository cloning, dependency installation, CMake configuration, and build verification steps.",
+      "reasoning": "This is a moderately complex setup task with clear sequential steps already outlined. The complexity comes from potential environment-specific issues and dependency management, but the task has well-defined steps and clear success criteria."
     },
     {
       "taskId": 2,
-      "taskTitle": "Implement Item Drop Rate Modification System",
+      "taskTitle": "Analyze compilation errors in clx_render.cpp",
       "complexityScore": 7,
       "recommendedSubtasks": 5,
-      "expansionPrompt": "Divide the item drop rate modification system into subtasks covering configuration file format, integration with existing drop mechanics, balance safeguards, testing, and user interface elements.",
-      "reasoning": "This task requires both technical implementation and game design considerations. Creating a configurable system that doesn't break game balance while extending existing mechanics without modifying core code is moderately complex."
+      "expansionPrompt": "Create detailed subtasks for analyzing compilation errors in clx_render.cpp, including error categorization, identifying problematic template code sections, dependency mapping between affected functions, and documenting findings with code snippets.",
+      "reasoning": "This task requires deep technical analysis of template-related compilation errors, which can be complex and interdependent. Understanding template instantiation issues requires expertise in C++ templates and compiler behavior, making this a high-complexity diagnostic task."
     },
     {
       "taskId": 3,
-      "taskTitle": "Design and Implement New Item Prefixes",
-      "complexityScore": 6,
-      "recommendedSubtasks": 4,
-      "expansionPrompt": "Break down the new item prefixes task into design, data structure implementation, integration with existing systems, and testing/balancing subtasks.",
-      "reasoning": "Creating new prefixes requires game design knowledge and technical implementation. The data-driven approach adds complexity, but the scope is contained to a specific feature area with clear deliverables."
+      "taskTitle": "Investigate differences between RelWithDebInfo and Release builds",
+      "complexityScore": 8,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Detail the steps needed to thoroughly compare RelWithDebInfo and Release build configurations, including compiler flag analysis, preprocessor definition comparison, template instantiation differences, and optimization level impacts.",
+      "reasoning": "This is a highly complex investigation requiring deep knowledge of build systems, compiler behavior, and C++ template instantiation. The task involves understanding subtle interactions between optimization levels, debug information, and template resolution across different build configurations."
     },
     {
       "taskId": 4,
-      "taskTitle": "Design and Implement New Item Suffixes",
-      "complexityScore": 6,
-      "recommendedSubtasks": 4,
-      "expansionPrompt": "Divide the new item suffixes task into design, implementation, integration with prefix system, and testing/balancing subtasks.",
-      "reasoning": "Similar complexity to the prefixes task, with the additional consideration of ensuring suffixes work well with the new prefixes. Leverages the same data-driven approach but requires careful balance testing."
+      "taskTitle": "Fix template parameter deduction issues",
+      "complexityScore": 9,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Create detailed subtasks for fixing template parameter deduction issues in clx_render.cpp, including addressing undeclared identifiers, fixing deduction failures, resolving template specialization conflicts, and implementing incremental testing of each fix.",
+      "reasoning": "This is a very complex implementation task requiring expert-level C++ template knowledge. Fixing template deduction issues often involves understanding complex type traits, SFINAE, and compiler-specific behaviors. The incremental testing approach adds further complexity to ensure changes don't break other functionality."
     },
     {
       "taskId": 5,
-      "taskTitle": "Create New Unique Items System",
-      "complexityScore": 8,
+      "taskTitle": "Ensure consistent interfaces between blit function types",
+      "complexityScore": 7,
       "recommendedSubtasks": 5,
-      "expansionPrompt": "Break down the unique items system into data structure design, item creation, integration with drop tables, balance testing, and visual/audio asset management subtasks.",
-      "reasoning": "This task involves complex game design, data structure creation, and integration with multiple existing systems. Creating balanced unique items that feel authentic to the original game requires significant design and technical work."
+      "expansionPrompt": "Break down the process of standardizing interfaces between different blit function types in clx_render.cpp, including interface review, inconsistency identification, signature standardization, and backward compatibility preservation.",
+      "reasoning": "This task requires careful refactoring of function interfaces while maintaining backward compatibility. The complexity comes from ensuring consistent template parameter usage across multiple function types and understanding the implicit conversions that might work differently between build configurations."
     },
     {
       "taskId": 6,
-      "taskTitle": "Implement Dungeon Layout Extension System",
-      "complexityScore": 9,
-      "recommendedSubtasks": 6,
-      "expansionPrompt": "Divide the dungeon layout extension system into analysis of existing algorithms, data format design, generation system implementation, integration points, testing, and performance optimization subtasks.",
-      "reasoning": "Dungeon generation is typically one of the most complex systems in roguelike games. Creating an extension system without modifying core algorithms requires deep understanding of the existing system and careful design to maintain game feel."
+      "taskTitle": "Address preprocessor directive issues",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Detail the steps needed to identify and fix preprocessor directive issues in clx_render.cpp that might cause different behavior between build configurations, including macro expansion analysis and refactoring problematic preprocessor-based code.",
+      "reasoning": "This task involves understanding how preprocessor directives interact with template code across different build configurations. While complex, it's more focused than some of the other tasks, dealing specifically with preprocessor-related issues that affect compilation."
     },
     {
       "taskId": 7,
-      "taskTitle": "Design and Implement New Monster Types",
+      "taskTitle": "Implement comprehensive fixes and test RelWithDebInfo build",
       "complexityScore": 8,
-      "recommendedSubtasks": 5,
-      "expansionPrompt": "Break down the new monster types task into data structure design, monster behavior implementation, visual/audio asset creation, spawn integration, and balance testing subtasks.",
-      "reasoning": "Creating new monsters involves multiple disciplines including game design, AI behavior programming, and possibly art integration. The system must handle various monster attributes and behaviors while maintaining game balance."
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Create detailed subtasks for implementing all necessary fixes to make the RelWithDebInfo build compile successfully, including integration of previous fixes, addressing remaining errors, and ensuring code quality and standards compliance.",
+      "reasoning": "This integration task requires bringing together multiple complex fixes while ensuring they work together harmoniously. The complexity comes from potential interactions between different fixes and the need to maintain code quality while making significant changes to template code."
     },
     {
       "taskId": 8,
-      "taskTitle": "Implement Cross-Platform Compatibility Testing Framework",
-      "complexityScore": 7,
+      "taskTitle": "Verify fixes and ensure no regressions",
+      "complexityScore": 6,
       "recommendedSubtasks": 5,
-      "expansionPrompt": "Divide the cross-platform testing framework into test suite design, automated testing implementation, platform-specific test cases, reporting system, and integration with CI/CD subtasks.",
-      "reasoning": "Creating a comprehensive testing framework across multiple platforms is technically challenging. It requires understanding platform-specific issues and implementing automated tests that can validate complex game features."
-    },
-    {
-      "taskId": 9,
-      "taskTitle": "Implement Multiplayer Compatibility Validation",
-      "complexityScore": 8,
-      "recommendedSubtasks": 5,
-      "expansionPrompt": "Break down the multiplayer validation task into synchronization testing methodology, client version compatibility system, test scenario development, automated multiplayer testing, and regression testing subtasks.",
-      "reasoning": "Multiplayer testing is inherently complex due to networking, synchronization issues, and the need to test various client combinations. Ensuring all new features work correctly in multiplayer adds significant complexity."
-    },
-    {
-      "taskId": 10,
-      "taskTitle": "Create Documentation and Release Package",
-      "complexityScore": 5,
-      "recommendedSubtasks": 4,
-      "expansionPrompt": "Divide the documentation and release task into user documentation, technical documentation for modders, example configuration creation, and release packaging subtasks.",
-      "reasoning": "While comprehensive, this task is primarily about documentation and packaging rather than technical implementation. The complexity comes from ensuring all features are properly documented and the release package is complete and user-friendly."
+      "expansionPrompt": "Break down the verification process for ensuring the template fixes work correctly in both build configurations, including comprehensive testing, performance comparison, and preparation of documentation and pull request.",
+      "reasoning": "This verification task requires thorough testing across multiple build configurations. The complexity comes from ensuring no regressions in functionality or performance while verifying that all compilation issues have been resolved in both configurations."
     }
   ]
 }

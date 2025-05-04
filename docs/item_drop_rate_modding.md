@@ -170,15 +170,42 @@ The system is implemented in the following files:
 
 The system integrates with the existing item drop system by modifying the `GetItemIndexForDroppableItem` function to apply the drop rate modifiers.
 
+## Drop Rate Overlay
+
+DevilutionX now includes a visual drop rate overlay that displays the current drop rate settings and their effects on item drops. This feature helps players understand how their drop rate settings translate into actual drop percentages.
+
+### Overlay Features
+
+- **Real-time Visualization**: The overlay shows the actual percentages for different item types based on your current settings.
+- **Color-Coded Information**: Different item types are color-coded to match their in-game appearance (white for normal, blue for magic, orange for rare, gold for unique).
+- **Detailed Breakdown**: Shows the percentage chance for each item quality type based on your current settings.
+
+### Accessing the Overlay
+
+The drop rate overlay appears automatically when you open the Drop Rate Modifiers menu. It displays:
+
+- Current drop chance percentage
+- Gold drop rate and value modifier
+- Item drop rate
+- Detailed breakdown of item type chances:
+  - Normal items
+  - Magic items
+  - Rare items
+  - Unique items
+
+### Technical Implementation
+
+The overlay is implemented in `gamemenu.cpp` using the `RenderDropRateOverlay` function, which is called via the `gmenu_set_render_callback` system. It calculates the actual drop percentages based on the current settings in the `DropRateManager`.
+
 ## Future Enhancements
 
 Planned future enhancements for the system include:
 
 1. Support for item ID-specific modifiers
-2. In-game UI for adjusting drop rates
-3. More granular control over unique item drop rates
-4. Support for modifying item quality distributions
-5. Integration with other modding systems (e.g., monster mods, dungeon mods)
+2. More granular control over unique item drop rates
+3. Support for modifying item quality distributions
+4. Integration with other modding systems (e.g., monster mods, dungeon mods)
+5. Enhanced overlay with additional statistics and information
 
 ## Troubleshooting
 

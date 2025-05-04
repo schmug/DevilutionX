@@ -1,0 +1,2 @@
+type	name	trn	level	maxHp	ai	intelligence	minDamage	maxDamage	resistance	monsterPack	customToHit	customArmorClass	talkMessage
+MT_NZOMBIE	Test Zombie	Zombie	2	40	Zombie	1	4	8	RESIST_FIRE	None	0	0	

@@ -1,0 +1,69 @@
+{
+  "gearLevelDisplay": {
+    "showInCharScreen": true,
+    "showInInventory": true,
+    "showInItemCompare": true,
+    "showChangeIndicator": true,
+    "style": "colorCoded"
+  },
+  "styles": {
+    "numeric": {
+      "description": "Simple numeric display of gear level"
+    },
+    "stars": {
+      "description": "Star rating (1-5 stars) based on gear level"
+    },
+    "colorCoded": {
+      "description": "Color-coded numeric display (white, blue, yellow, orange, red)"
+    },
+    "tier": {
+      "description": "Tier-based display (Basic, Magic, Rare, Epic, Legendary)"
+    }
+  },
+  "colorThresholds": [
+    {
+      "threshold": 20.0,
+      "color": "white",
+      "stars": 1,
+      "tier": "Basic"
+    },
+    {
+      "threshold": 40.0,
+      "color": "blue",
+      "stars": 2,
+      "tier": "Magic"
+    },
+    {
+      "threshold": 60.0,
+      "color": "yellow",
+      "stars": 3,
+      "tier": "Rare"
+    },
+    {
+      "threshold": 80.0,
+      "color": "orange",
+      "stars": 4,
+      "tier": "Epic"
+    },
+    {
+      "threshold": 999.0,
+      "color": "red",
+      "stars": 5,
+      "tier": "Legendary"
+    }
+  ],
+  "positions": {
+    "charScreen": {
+      "x": 150,
+      "y": 20
+    },
+    "inventory": {
+      "x": 10,
+      "y": 10
+    },
+    "itemCompare": {
+      "x": 10,
+      "y": 220
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "mpDifficulty": {
+    "method": "weighted",
+    "playerCountScaling": 0.1,
+    "maxPlayerDiffVariance": 20.0,
+    "proximityWeight": 0.5,
+    "syncDifficulty": true
+  },
+  "presets": [
+    {
+      "name": "Balanced",
+      "method": "weighted",
+      "playerCountScaling": 0.1,
+      "maxPlayerDiffVariance": 20.0,
+      "proximityWeight": 0.5,
+      "syncDifficulty": true
+    },
+    {
+      "name": "Challenging",
+      "method": "maximum",
+      "playerCountScaling": 0.15,
+      "maxPlayerDiffVariance": 15.0,
+      "proximityWeight": 0.5,
+      "syncDifficulty": true
+    },
+    {
+      "name": "Casual",
+      "method": "average",
+      "playerCountScaling": 0.05,
+      "maxPlayerDiffVariance": 30.0,
+      "proximityWeight": 0.5,
+      "syncDifficulty": true
+    },
+    {
+      "name": "Zone-Based",
+      "method": "perPlayer",
+      "playerCountScaling": 0.1,
+      "maxPlayerDiffVariance": 50.0,
+      "proximityWeight": 0.5,
+      "syncDifficulty": false
+    },
+    {
+      "name": "Host-Controlled",
+      "method": "host",
+      "playerCountScaling": 0.1,
+      "maxPlayerDiffVariance": 0.0,
+      "proximityWeight": 0.5,
+      "syncDifficulty": true
+    }
+  ]
+}

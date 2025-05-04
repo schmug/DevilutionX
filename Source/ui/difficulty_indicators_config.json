@@ -1,0 +1,85 @@
+{
+  "difficultyIndicators": {
+    "showOnMinimap": true,
+    "showOnMainMap": true,
+    "showAreaTransitions": true,
+    "showLegend": true,
+    "style": "colorGradient"
+  },
+  "styles": {
+    "colorGradient": {
+      "description": "Color gradient from green (easy) to red (hard)"
+    },
+    "numberScale": {
+      "description": "Numeric scale (1-5) based on difficulty"
+    },
+    "iconSet": {
+      "description": "Different icons for each difficulty level"
+    },
+    "pulseIntensity": {
+      "description": "Pulsing indicator with varying intensity"
+    }
+  },
+  "colorThresholds": [
+    {
+      "threshold": 20.0,
+      "color": "green",
+      "scale": 1,
+      "iconIndex": 0,
+      "label": "Easy"
+    },
+    {
+      "threshold": 40.0,
+      "color": "blue",
+      "scale": 2,
+      "iconIndex": 1,
+      "label": "Normal"
+    },
+    {
+      "threshold": 60.0,
+      "color": "yellow",
+      "scale": 3,
+      "iconIndex": 2,
+      "label": "Hard"
+    },
+    {
+      "threshold": 80.0,
+      "color": "orange",
+      "scale": 4,
+      "iconIndex": 3,
+      "label": "Very Hard"
+    },
+    {
+      "threshold": 999.0,
+      "color": "red",
+      "scale": 5,
+      "iconIndex": 4,
+      "label": "Extreme"
+    }
+  ],
+  "positions": {
+    "legend": {
+      "minimap": {
+        "x": -100,
+        "y": -40,
+        "anchor": "bottomRight"
+      },
+      "mainMap": {
+        "x": 20,
+        "y": 20,
+        "anchor": "topRight"
+      }
+    }
+  },
+  "pulseSettings": {
+    "minFrequency": 0.5,
+    "maxFrequency": 2.5,
+    "minIntensity": 0.3,
+    "maxIntensity": 1.0
+  },
+  "areaTransitions": {
+    "highlightColor": "white",
+    "highlightThreshold": 20.0,
+    "showDirectionArrow": true
+  }
+}

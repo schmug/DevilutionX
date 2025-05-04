@@ -1,33 +1,44 @@
-# DevilutionX Enhancement Project PRD
+# DevilutionX Dynamic Difficulty System PRD
 
 ## Project Overview
-This project aims to enhance DevilutionX with new features and improvements while maintaining the core gameplay experience. The enhancements will focus on quality of life improvements, UI enhancements, gameplay features, and multiplayer improvements.
+This project aims to enhance DevilutionX with a dynamic difficulty system based on player gear level. The system will automatically adjust monster difficulty based on the player's equipment quality, creating a more balanced and engaging gameplay experience that adapts to the player's progression.
 
 ## Goals
-- Enhance multiplayer functionality and social features
-- Maintain compatibility with the original game
+- Create a more engaging and balanced gameplay experience
+- Provide appropriate challenge regardless of player gear level
+- Allow players to feel powerful after significant gear upgrades
+- Maintain the core gameplay feel while adding depth
 
 # Core Features
 
-## New Content
-- Increase drop rates
-- Create new prefixes
-- Create new suffixes
-- Create new unique items
-- Create new dungeon layouts
-- Add new monster types
-- Implement new quests
+## Dynamic Difficulty System
+- Calculate player "Gear Level" based on equipment quality and character level
+- Adjust monster difficulty based on the calculated Gear Level
+- Implement smooth transitions between difficulty levels
+- Add visual indicators for current difficulty level on the minimap
+- Create wave effects in difficulty to provide varied gameplay
 
 ## Technical Requirements
-- All features must be implementable without core code modifications
-- Maintain compatibility with original game assets
-- Support all current platforms
-- Preserve multiplayer compatibility
+- Implement gear scoring system that evaluates item quality, type, and affixes
+- Create monster stat scaling that preserves monster behavior while adjusting difficulty
+- Add UI elements to display gear level and current difficulty
+- Implement smoothing algorithms for difficulty transitions
+- Ensure compatibility with multiplayer by synchronizing difficulty calculations
 - Maintain save game compatibility
 
 ## Success Criteria
-- Maintained game stability
-- Enhanced mod support usage
+- Players experience appropriate challenge regardless of gear level
+- Difficulty transitions feel smooth and natural
+- Players can feel temporarily overpowered after significant gear upgrades
+- Visual indicators clearly communicate current difficulty level
+- System maintains game balance without requiring manual adjustments
 
 ## Timeline
-The project will be implemented in phases, with each phase focusing on specific feature sets. Priority will be given to features that provide immediate value to players while maintaining game stability.
+The project will be implemented in phases:
+
+1. Gear Level Calculation - Implement the core system for evaluating player equipment
+2. Monster Difficulty Adjustment - Create scaling for monster stats based on gear level
+3. UI Integration - Add visual indicators for gear level and difficulty
+4. Smoothing and Wave Effects - Implement algorithms for natural difficulty transitions
+
+Priority will be given to creating a functional core system before adding refinements.

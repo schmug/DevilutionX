@@ -12,6 +12,9 @@ on:
     paths-ignore:
       - '*.md'
       - 'docs/**'
+  # Add tag push for release packaging
+  tags:
+    - 'v*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

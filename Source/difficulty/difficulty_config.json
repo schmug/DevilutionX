@@ -1,0 +1,39 @@
+{
+  "difficultyTransition": {
+    "increaseRate": 0.08,
+    "decreaseRate": 0.15,
+    "overpowerFactor": 1.5,
+    "overpowerDuration": 300.0,
+    "historySize": 10,
+    "interpolationType": "sigmoid"
+  },
+  "presets": [
+    {
+      "name": "Smooth",
+      "increaseRate": 0.05,
+      "decreaseRate": 0.1,
+      "overpowerFactor": 1.3,
+      "overpowerDuration": 400.0,
+      "historySize": 15,
+      "interpolationType": "sigmoid"
+    },
+    {
+      "name": "Responsive",
+      "increaseRate": 0.15,
+      "decreaseRate": 0.25,
+      "overpowerFactor": 1.2,
+      "overpowerDuration": 200.0,
+      "historySize": 5,
+      "interpolationType": "linear"
+    },
+    {
+      "name": "Dramatic",
+      "increaseRate": 0.1,
+      "decreaseRate": 0.2,
+      "overpowerFactor": 2.0,
+      "overpowerDuration": 500.0,
+      "historySize": 8,
+      "interpolationType": "exponential"
+    }
+  ]
+}

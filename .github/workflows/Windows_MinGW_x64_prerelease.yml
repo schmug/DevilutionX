@@ -1,0 +1,61 @@
+name: Windows MinGW x64 Pre-release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Create Build Environment
+      run: >
+        sudo apt-get update &&
+        sudo apt-get install -y cmake gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 pkg-config-mingw-w64-x86-64 libz-mingw-w64-dev gettext dpkg-dev wget git sudo smpq &&
+        sudo rm /usr/x86_64-w64-mingw32/lib/libz.dll.a &&
+        sudo Packaging/windows/mingw-prep64.sh
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}
+      run: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=OFF -DCPACK=ON -DCMAKE_TOOLCHAIN_FILE=../CMake/platforms/mingwcc64.toolchain.cmake -DDEVILUTIONX_SYSTEM_BZIP2=OFF -DDEVILUTIONX_STATIC_LIBSODIUM=ON -DDISCORD_INTEGRATION=ON -DSCREEN_READER_INTEGRATION=ON
+
+    - name: Build
+      working-directory: ${{github.workspace}}
+      shell: bash
+      run: cmake --build build -j $(nproc) --target package
+
+    - name: Upload-Package
+      uses: actions/upload-artifact@v4
+      with:
+        name: devilutionx_x64.zip
+        path: build/devilutionx.zip
+
+  release:
+    name: 'Create Pre-release and Upload Windows x64 Zip'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: devilutionx_x64.zip
+          path: ./release-artifacts
+
+      - name: Create GitHub Pre-release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: DevilutionX Windows x64 ${{ github.ref_name }}
+          body: |
+            Automated pre-release for Windows x64 build.
+          prerelease: true
+          files: ./release-artifacts/devilutionx_x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

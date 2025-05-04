@@ -1,0 +1,51 @@
+# DevilutionX Crash and Visual Artifacts Fix PRD
+
+## Project Overview
+This project aims to fix a critical crash in DevilutionX related to the new scaling mechanisms and address visual artifacts appearing on screen. The crash occurs in the StaticVector implementation with std::pair<unsigned char, unsigned char> and manifests as an access violation in memset_repstos.
+
+## Goals
+- Fix the crash occurring in the StaticVector implementation
+- Address visual artifacts appearing on screen
+- Ensure compatibility with the new scaling mechanisms
+- Maintain performance and stability
+
+## Technical Details
+- Crash occurs at: vcruntime140.dll!memset_repstos() Line 43
+- Related to: devilution::StaticVector<struct std::pair<unsigned char,unsigned char>,127>::StaticVector
+- Access violation writing location 0x000000F922D10000
+- Likely related to the monster scaling and difficulty wave systems
+
+## Core Features to Fix
+
+### Crash in StaticVector Implementation
+- Investigate memory corruption in StaticVector initialization
+- Fix potential buffer overflow or memory alignment issues
+- Address possible race conditions in the rendering code
+- Ensure proper initialization of std::pair<unsigned char, unsigned char> elements
+
+### Visual Artifacts
+- Identify the source of visual artifacts on screen
+- Fix rendering issues related to the scaling mechanisms
+- Ensure proper cleanup of rendering resources
+- Address potential issues with the OutlineRowSolidRuns implementation
+
+### Scaling Mechanism Compatibility
+- Ensure monster scaling debug utilities work correctly
+- Fix any issues with the difficulty wave implementation
+- Address potential issues with the dynamic difficulty system
+- Ensure proper synchronization between systems
+
+## Success Criteria
+- No crashes when using the scaling mechanisms
+- No visual artifacts appear on screen
+- All systems function correctly together
+- Performance remains optimal
+
+## Timeline
+The project will be implemented in phases:
+1. Investigation and Analysis - Identify the root causes of the issues
+2. Implementation of Fixes - Address the identified issues
+3. Testing and Validation - Ensure the fixes work correctly
+4. Documentation - Update documentation to reflect changes
+
+Priority will be given to fixing the crash before addressing visual artifacts.

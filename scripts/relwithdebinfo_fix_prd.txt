@@ -1,0 +1,41 @@
+# RelWithDebInfo Build Fix Project Requirements
+
+## Overview
+The DevilutionX project currently has compilation errors in the RelWithDebInfo build configuration, while the Release build works properly. This project aims to fix these compilation errors to ensure the RelWithDebInfo build works correctly.
+
+## Background
+The RelWithDebInfo build is failing with compilation errors in the clx_render.cpp file. The errors are primarily related to undeclared identifiers and syntax issues in template code. The Release build configuration works fine, suggesting there might be differences in how template code is handled between the two build configurations.
+
+## Objectives
+1. Identify the root causes of the compilation errors in the RelWithDebInfo build
+2. Implement fixes for the identified issues
+3. Ensure the RelWithDebInfo build compiles successfully
+4. Verify that the fixed build runs correctly
+
+## Requirements
+
+### Technical Requirements
+1. Fix compilation errors in clx_render.cpp file
+2. Address template parameter deduction issues
+3. Ensure consistent interfaces between different blit function types
+4. Check for preprocessor directives affecting code differently between builds
+5. Maintain compatibility with existing code
+6. Ensure no regressions in the Release build
+
+### Success Criteria
+1. RelWithDebInfo build completes without errors
+2. The executable produced by the RelWithDebInfo build runs correctly
+3. No regressions in the Release build
+
+## Constraints
+1. Minimize changes to existing code structure
+2. Maintain backward compatibility
+3. Follow project coding standards and conventions
+
+## Timeline
+This is a high-priority task that should be completed as soon as possible to unblock development work that requires the RelWithDebInfo build.
+
+## Stakeholders
+- Development team
+- QA team
+- Project maintainers
