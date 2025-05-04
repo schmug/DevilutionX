@@ -1,0 +1,229 @@
+{
+  "monsterDefinitions": [
+    {
+      "type": 0,
+      "level": 1,
+      "name": "Zombie",
+      "baseStats": {
+        "hitPoints": 50,
+        "damageMin": 3,
+        "damageMax": 6,
+        "armorClass": 10,
+        "toHitChance": 30,
+        "specialEffectiveness": 1.0
+      },
+      "scaling": {
+        "hitPoints": {
+          "factor": 0.15,
+          "min": 50,
+          "max": 500,
+          "curve": "exponential"
+        },
+        "damage": {
+          "factor": 0.1,
+          "min": 3,
+          "max": 50,
+          "curve": "linear"
+        },
+        "armorClass": {
+          "factor": 0.05,
+          "min": 10,
+          "max": 100,
+          "curve": "logarithmic"
+        },
+        "toHitChance": {
+          "factor": 0.05,
+          "min": 30,
+          "max": 80,
+          "curve": "sigmoid"
+        },
+        "specialEffectiveness": {
+          "factor": 0.05,
+          "min": 1.0,
+          "max": 2.0,
+          "curve": "linear"
+        }
+      }
+    },
+    {
+      "type": 1,
+      "level": 2,
+      "name": "Ghoul",
+      "baseStats": {
+        "hitPoints": 80,
+        "damageMin": 5,
+        "damageMax": 10,
+        "armorClass": 15,
+        "toHitChance": 35,
+        "specialEffectiveness": 1.1
+      },
+      "scaling": {
+        "hitPoints": {
+          "factor": 0.18,
+          "min": 80,
+          "max": 600,
+          "curve": "exponential"
+        },
+        "damage": {
+          "factor": 0.12,
+          "min": 5,
+          "max": 60,
+          "curve": "linear"
+        },
+        "armorClass": {
+          "factor": 0.06,
+          "min": 15,
+          "max": 120,
+          "curve": "logarithmic"
+        },
+        "toHitChance": {
+          "factor": 0.06,
+          "min": 35,
+          "max": 85,
+          "curve": "sigmoid"
+        },
+        "specialEffectiveness": {
+          "factor": 0.06,
+          "min": 1.1,
+          "max": 2.2,
+          "curve": "linear"
+        }
+      }
+    },
+    {
+      "type": 2,
+      "level": 3,
+      "name": "Skeleton",
+      "baseStats": {
+        "hitPoints": 65,
+        "damageMin": 6,
+        "damageMax": 12,
+        "armorClass": 20,
+        "toHitChance": 40,
+        "specialEffectiveness": 1.0
+      },
+      "scaling": {
+        "hitPoints": {
+          "factor": 0.16,
+          "min": 65,
+          "max": 550,
+          "curve": "exponential"
+        },
+        "damage": {
+          "factor": 0.11,
+          "min": 6,
+          "max": 55,
+          "curve": "linear"
+        },
+        "armorClass": {
+          "factor": 0.07,
+          "min": 20,
+          "max": 130,
+          "curve": "logarithmic"
+        },
+        "toHitChance": {
+          "factor": 0.07,
+          "min": 40,
+          "max": 90,
+          "curve": "sigmoid"
+        },
+        "specialEffectiveness": {
+          "factor": 0.05,
+          "min": 1.0,
+          "max": 2.0,
+          "curve": "linear"
+        }
+      }
+    },
+    {
+      "type": 3,
+      "level": 5,
+      "name": "Fallen One",
+      "baseStats": {
+        "hitPoints": 40,
+        "damageMin": 4,
+        "damageMax": 8,
+        "armorClass": 12,
+        "toHitChance": 35,
+        "specialEffectiveness": 1.0
+      },
+      "scaling": {
+        "hitPoints": {
+          "factor": 0.14,
+          "min": 40,
+          "max": 400,
+          "curve": "exponential"
+        },
+        "damage": {
+          "factor": 0.09,
+          "min": 4,
+          "max": 45,
+          "curve": "linear"
+        },
+        "armorClass": {
+          "factor": 0.05,
+          "min": 12,
+          "max": 100,
+          "curve": "logarithmic"
+        },
+        "toHitChance": {
+          "factor": 0.05,
+          "min": 35,
+          "max": 80,
+          "curve": "sigmoid"
+        },
+        "specialEffectiveness": {
+          "factor": 0.04,
+          "min": 1.0,
+          "max": 1.8,
+          "curve": "linear"
+        }
+      }
+    },
+    {
+      "type": 4,
+      "level": 8,
+      "name": "Demon",
+      "baseStats": {
+        "hitPoints": 120,
+        "damageMin": 10,
+        "damageMax": 20,
+        "armorClass": 25,
+        "toHitChance": 45,
+        "specialEffectiveness": 1.2
+      },
+      "scaling": {
+        "hitPoints": {
+          "factor": 0.2,
+          "min": 120,
+          "max": 800,
+          "curve": "exponential"
+        },
+        "damage": {
+          "factor": 0.15,
+          "min": 10,
+          "max": 80,
+          "curve": "linear"
+        },
+        "armorClass": {
+          "factor": 0.08,
+          "min": 25,
+          "max": 150,
+          "curve": "logarithmic"
+        },
+        "toHitChance": {
+          "factor": 0.08,
+          "min": 45,
+          "max": 95,
+          "curve": "sigmoid"
+        },
+        "specialEffectiveness": {
+          "factor": 0.07,
+          "min": 1.2,
+          "max": 2.5,
+          "curve": "linear"
+        }
+      }
+    }
+  ]
+}

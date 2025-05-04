@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Features
+
+#### Gameplay
+
+- Added drop rate overlay to visualize current item drop rate settings
+- Fixed gold drop rate to respect 0% setting
+- Enhanced item type and quality preferences for more accurate drop rates
+- Improved unique item drop rate when selected
+- Added new monster types inspired by Diablo 2, 3, 4, and Path of Exile
+- Implemented TSV-based monster data loading system
+- Added support for custom monster attributes and abilities
+
 ## DevilutionX 1.5.2
 
 ### Bug Fixes

@@ -1,0 +1,23 @@
+Build Instructions for DevilutionX with RelWithDebInfo Configuration
+==================================================================
+
+To build the project with our changes to fix the template parameter deduction issues:
+
+1. Open VS Code in the DevilutionX directory
+2. Press Ctrl+Shift+B to run the default build task (or use the Terminal > Run Build Task... menu)
+   - This will run the "Build – CMake" task defined in your .vscode/tasks.json
+
+Alternatively, you can use the Command Palette:
+1. Press Ctrl+Shift+P
+2. Type "Tasks: Run Task"
+3. Select "Build – CMake"
+
+If you prefer to use Visual Studio instead:
+1. Press Ctrl+Shift+P
+2. Type "Tasks: Run Task"
+3. Select "Configure – Visual Studio"
+4. When that completes, run "Build – Visual Studio"
+
+After building, you can run the game from the build directory to see if our changes fixed the visual artifacts.
+
+Note: Our changes to clx_render.cpp renamed the local Blit* structs to Local* versions to avoid ambiguity with types in blit_impl.hpp. This should resolve the template parameter deduction issues in the RelWithDebInfo build.
