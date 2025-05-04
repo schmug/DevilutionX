@@ -524,7 +524,7 @@ void Theme_Treasure(int t)
 				int rv = GenerateRnd(treasureType);
 				// BUGFIX: this used to be `2*GenerateRnd(treasureType) == 0` however 2*0 has no effect, should probably be `FlipCoin(2*treasureType)`
 				if (FlipCoin(treasureType)) {
-					CreateTypeItem({ xp, yp }, false, ItemType::Gold, IMISC_NONE, false, true);
+					CreateTypeItem({ xp, yp }, false, ItemType::Gold, IMISC_NONE, false, true, false, DropRateContext::SpecialObjectDrop);
 					ItemNoFlippy();
 				}
 				if (rv == 0) {

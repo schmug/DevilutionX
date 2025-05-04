@@ -1508,9 +1508,17 @@ _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_r
 			}
 			
 			// Apply item quality modifier
+			// For special object drops, we apply a reduced quality scaling factor
+			float qualityScalingFactor = 1.0f;
+			if (context == DropRateContext::SpecialObjectDrop) {
+				// Use a reduced effect (25%) for special object drops to maintain original behavior
+				qualityScalingFactor = 0.25f;
+				LogVerbose("Special object drop detected - applying reduced quality scaling factor: {}", qualityScalingFactor);
+			}
+			
 			if (itemQualityPercent > 50) {
 				// Higher quality means better items (unique, high value, special properties)
-				float qualityMultiplier = 1.0f + ((itemQualityPercent - 50) / 50.0f) * 4.0f;
+				float qualityMultiplier = 1.0f + ((itemQualityPercent - 50) / 50.0f) * 4.0f * qualityScalingFactor;
 				if (isUnique) {
 					modifiedDropRate *= (qualityMultiplier * 3.0f);
 				} else if (item.iValue > 5000) {
@@ -1522,7 +1530,7 @@ _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_r
 				}
 			} else if (itemQualityPercent < 50) {
 				// Lower quality means worse items (normal)
-				float qualityMultiplier = 1.0f + ((50 - itemQualityPercent) / 50.0f) * 4.0f;
+				float qualityMultiplier = 1.0f + ((50 - itemQualityPercent) / 50.0f) * 4.0f * qualityScalingFactor;
 				if (!isUnique && HasNoneOf(item.iFlags, ~ItemSpecialEffect::None) && item.iValue < 1000) {
 					// Basic items with no special properties and low value
 					modifiedDropRate *= qualityMultiplier;
@@ -1608,7 +1616,7 @@ _item_indexes RndAllItems()
 	}, DropRateContext::GroundDrop);
 }
 
-_item_indexes RndTypeItems(ItemType itemType, int imid, int lvl)
+_item_indexes RndTypeItems(ItemType itemType, int imid, int lvl, DropRateContext dropContext = DropRateContext::GroundDrop)
 {
 	int itemMaxLevel = lvl * 2;
 	return GetItemIndexForDroppableItem(false, [&itemMaxLevel, &itemType, &imid](const ItemData &item) {
@@ -1619,7 +1627,7 @@ _item_indexes RndTypeItems(ItemType itemType, int imid, int lvl)
 		if (imid != -1 && item.iMiscId != imid)
 			return false;
 		return true;
-	}, DropRateContext::GroundDrop);
+	}, dropContext);
 }
 
 std::vector<uint8_t> GetValidUniques(int lvl, unique_base_item baseItemId)
@@ -3752,13 +3760,13 @@ void CreateRndUseful(Point position, bool sendmsg)
 		NetSendCmdPItem(false, CMD_DROPITEM, item.position, item);
 }
 
-void CreateTypeItem(Point position, bool onlygood, ItemType itemType, int imisc, bool sendmsg, bool delta, bool spawn)
+void CreateTypeItem(Point position, bool onlygood, ItemType itemType, int imisc, bool sendmsg, bool delta, bool spawn, DropRateContext dropContext)
 {
 	_item_indexes idx;
 
 	int curlv = ItemsGetCurrlevel();
 	if (itemType != ItemType::Gold)
-		idx = RndTypeItems(itemType, imisc, curlv);
+		idx = RndTypeItems(itemType, imisc, curlv, dropContext);
 	else
 		idx = IDI_GOLD;
 

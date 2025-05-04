@@ -26,11 +26,12 @@ enum class DropRateScope {
  * @brief Defines when a drop rate modifier is applied
  */
 enum class DropRateContext {
-	Always,       // Always apply this modifier
-	MonsterDrop,  // Apply only when monsters drop items
-	ChestDrop,    // Apply only when items come from chests
-	GroundDrop,   // Apply only when items are generated on the ground
-	QuestReward,  // Apply only for quest rewards
+	Always,           // Always apply this modifier
+	MonsterDrop,      // Apply only when monsters drop items
+	ChestDrop,        // Apply only when items come from chests
+	GroundDrop,       // Apply only when items are generated on the ground
+	QuestReward,      // Apply only for quest rewards
+	SpecialObjectDrop // Apply only for special objects (bookcases, weapon racks, etc.)
 };
 
 /**

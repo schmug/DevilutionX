@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2025-04-27T20:02:26.915Z",
-    "tasksAnalyzed": 8,
+    "generatedAt": "2025-05-04T19:37:02.963Z",
+    "tasksAnalyzed": 10,
     "thresholdScore": 5,
     "projectName": "Your Project Name",
     "usedResearch": false
@@ -9,67 +9,83 @@
   "complexityAnalysis": [
     {
       "taskId": 1,
-      "taskTitle": "Set up development environment with both build configurations",
-      "complexityScore": 4,
+      "taskTitle": "Define Special Drop Context Enum",
+      "complexityScore": 2,
       "recommendedSubtasks": 4,
-      "expansionPrompt": "Break down the process of setting up a development environment for DevilutionX with both Release and RelWithDebInfo configurations, including repository cloning, dependency installation, CMake configuration, and build verification steps.",
-      "reasoning": "This is a moderately complex setup task with clear sequential steps already outlined. The complexity comes from potential environment-specific issues and dependency management, but the task has well-defined steps and clear success criteria."
+      "expansionPrompt": "Break down the process of creating a DropContext enum in a game codebase, including identifying all necessary enum values, determining the appropriate header file location, ensuring compatibility with existing code, and documenting the new enum for other developers.",
+      "reasoning": "This is a relatively straightforward task involving creating a simple enum with predefined values. The complexity is low as it doesn't require complex logic, but proper planning for enum values and placement in the codebase is needed."
     },
     {
       "taskId": 2,
-      "taskTitle": "Analyze compilation errors in clx_render.cpp",
-      "complexityScore": 7,
+      "taskTitle": "Modify GetItemIndexForDroppableItem Function",
+      "complexityScore": 6,
       "recommendedSubtasks": 5,
-      "expansionPrompt": "Create detailed subtasks for analyzing compilation errors in clx_render.cpp, including error categorization, identifying problematic template code sections, dependency mapping between affected functions, and documenting findings with code snippets.",
-      "reasoning": "This task requires deep technical analysis of template-related compilation errors, which can be complex and interdependent. Understanding template instantiation issues requires expertise in C++ templates and compiler behavior, making this a high-complexity diagnostic task."
+      "expansionPrompt": "Detail the steps needed to modify the GetItemIndexForDroppableItem function to handle the new DropContext parameter, including analyzing the current function implementation, designing conditional logic for different contexts, ensuring backward compatibility, and testing the modified function with various input combinations.",
+      "reasoning": "This task involves modifying a core function with conditional logic that affects the game's item drop system. Understanding the existing function, implementing context-specific logic, and ensuring it works correctly for all item types increases complexity."
     },
     {
       "taskId": 3,
-      "taskTitle": "Investigate differences between RelWithDebInfo and Release builds",
-      "complexityScore": 8,
-      "recommendedSubtasks": 6,
-      "expansionPrompt": "Detail the steps needed to thoroughly compare RelWithDebInfo and Release build configurations, including compiler flag analysis, preprocessor definition comparison, template instantiation differences, and optimization level impacts.",
-      "reasoning": "This is a highly complex investigation requiring deep knowledge of build systems, compiler behavior, and C++ template instantiation. The task involves understanding subtle interactions between optimization levels, debug information, and template resolution across different build configurations."
+      "taskTitle": "Update CreateTypeItem Function",
+      "complexityScore": 5,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Outline the process of updating the CreateTypeItem function to support the new drop context parameter, including analyzing function dependencies, implementing the parameter passing, adding default values for backward compatibility, and testing the function with various item types and contexts.",
+      "reasoning": "This task requires understanding how CreateTypeItem interacts with GetItemIndexForDroppableItem and ensuring backward compatibility. The complexity comes from maintaining existing behavior while adding new functionality."
     },
     {
       "taskId": 4,
-      "taskTitle": "Fix template parameter deduction issues",
-      "complexityScore": 9,
-      "recommendedSubtasks": 7,
-      "expansionPrompt": "Create detailed subtasks for fixing template parameter deduction issues in clx_render.cpp, including addressing undeclared identifiers, fixing deduction failures, resolving template specialization conflicts, and implementing incremental testing of each fix.",
-      "reasoning": "This is a very complex implementation task requiring expert-level C++ template knowledge. Fixing template deduction issues often involves understanding complex type traits, SFINAE, and compiler-specific behaviors. The incremental testing approach adds further complexity to ensure changes don't break other functionality."
+      "taskTitle": "Implement Quality Scaling for Special Drops",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down the implementation of a quality scaling system for special drops, including designing the scaling formula, integrating it with the existing quality system, implementing context-specific scaling factors, testing with various quality levels, and ensuring balance between randomness and context-appropriate drops.",
+      "reasoning": "This task involves creating a new game mechanic that affects item quality distribution. Designing a balanced scaling system that works across different contexts while maintaining game balance adds significant complexity."
     },
     {
       "taskId": 5,
-      "taskTitle": "Ensure consistent interfaces between blit function types",
-      "complexityScore": 7,
-      "recommendedSubtasks": 5,
-      "expansionPrompt": "Break down the process of standardizing interfaces between different blit function types in clx_render.cpp, including interface review, inconsistency identification, signature standardization, and backward compatibility preservation.",
-      "reasoning": "This task requires careful refactoring of function interfaces while maintaining backward compatibility. The complexity comes from ensuring consistent template parameter usage across multiple function types and understanding the implicit conversions that might work differently between build configurations."
+      "taskTitle": "Update Bookcase Drop Logic",
+      "complexityScore": 4,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Detail the steps to update the bookcase drop system with the new context parameter, including identifying all bookcase-related functions, modifying each function to use the appropriate drop context, ensuring books remain the primary drop type, and testing the updated system with various quality settings.",
+      "reasoning": "This task requires identifying and modifying specific functions related to bookcases. The complexity is moderate as it involves applying the new system to a specific object type while maintaining expected behavior."
     },
     {
       "taskId": 6,
-      "taskTitle": "Address preprocessor directive issues",
-      "complexityScore": 6,
+      "taskTitle": "Update Weapon Rack and Armor Stand Logic",
+      "complexityScore": 5,
       "recommendedSubtasks": 5,
-      "expansionPrompt": "Detail the steps needed to identify and fix preprocessor directive issues in clx_render.cpp that might cause different behavior between build configurations, including macro expansion analysis and refactoring problematic preprocessor-based code.",
-      "reasoning": "This task involves understanding how preprocessor directives interact with template code across different build configurations. While complex, it's more focused than some of the other tasks, dealing specifically with preprocessor-related issues that affect compilation."
+      "expansionPrompt": "Outline the process of updating weapon rack and armor stand drop logic, including identifying all relevant functions, implementing context-specific parameters for each object type, ensuring appropriate item type constraints, testing with various quality settings, and verifying visual feedback when items are dropped.",
+      "reasoning": "This task involves modifying multiple object types with potentially different drop behaviors. The complexity comes from ensuring consistent behavior across different object types while maintaining their unique drop characteristics."
     },
     {
       "taskId": 7,
-      "taskTitle": "Implement comprehensive fixes and test RelWithDebInfo build",
-      "complexityScore": 8,
-      "recommendedSubtasks": 6,
-      "expansionPrompt": "Create detailed subtasks for implementing all necessary fixes to make the RelWithDebInfo build compile successfully, including integration of previous fixes, addressing remaining errors, and ensuring code quality and standards compliance.",
-      "reasoning": "This integration task requires bringing together multiple complex fixes while ensuring they work together harmoniously. The complexity comes from potential interactions between different fixes and the need to maintain code quality while making significant changes to template code."
+      "taskTitle": "Update Other Special Object Drop Logic",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the process of identifying and updating all remaining special object drop systems, including creating an inventory of special objects with unique drop behavior, analyzing each object's current implementation, determining appropriate drop contexts, implementing the changes consistently, and testing each object type thoroughly.",
+      "reasoning": "This task requires a comprehensive review of the codebase to identify all special objects and their drop behaviors. The complexity comes from the potential variety of object types and ensuring consistent implementation across all of them."
     },
     {
       "taskId": 8,
-      "taskTitle": "Verify fixes and ensure no regressions",
-      "complexityScore": 6,
+      "taskTitle": "Add Configuration Options for Quality Scaling",
+      "complexityScore": 5,
       "recommendedSubtasks": 5,
-      "expansionPrompt": "Break down the verification process for ensuring the template fixes work correctly in both build configurations, including comprehensive testing, performance comparison, and preparation of documentation and pull request.",
-      "reasoning": "This verification task requires thorough testing across multiple build configurations. The complexity comes from ensuring no regressions in functionality or performance while verifying that all compilation issues have been resolved in both configurations."
+      "expansionPrompt": "Detail the implementation of configuration options for quality scaling, including designing the configuration parameters, implementing the UI elements for these options, connecting the configuration to the scaling system, providing appropriate defaults, and ensuring changes are properly saved and loaded.",
+      "reasoning": "This task involves adding user-configurable options that affect gameplay. The complexity comes from designing intuitive options, implementing the UI, and ensuring the configuration properly affects the drop system."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "Ensure Multiplayer Compatibility",
+      "complexityScore": 8,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down the process of ensuring multiplayer compatibility for the new drop system, including analyzing potential synchronization issues, implementing deterministic drop behavior, testing with various network conditions, handling host/client quality setting differences, addressing potential race conditions, and documenting multiplayer-specific considerations.",
+      "reasoning": "Multiplayer compatibility often introduces significant complexity due to synchronization requirements, network conditions, and ensuring consistent behavior across clients. This task requires deep understanding of the game's networking architecture."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "Comprehensive Testing and Balancing",
+      "complexityScore": 7,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Outline a comprehensive testing and balancing plan for the drop system, including designing test scenarios for all object types, creating data collection methods, analyzing drop distributions, comparing results against design goals, implementing balance adjustments, performing regression testing, and documenting the final system behavior.",
+      "reasoning": "This task involves systematic testing across numerous scenarios and potentially multiple iterations of balance adjustments. The complexity comes from the need for thorough testing, data analysis, and ensuring the system meets design goals while maintaining game balance."
     }
   ]
 }

@@ -1,0 +1,44 @@
+# DevilutionX Drop Rate System Refinement PRD
+
+## Project Overview
+This project aims to refine the drop rate system in DevilutionX to maintain the original logic for special drops (bookcases, weapon racks, etc.) while allowing random drops to be modified by quality adjustments. The goal is to ensure that special objects continue to provide their intended item types while still allowing for customization of item quality.
+
+## Goals
+- Preserve the original behavior of special object drops (bookcases, weapon racks, etc.)
+- Allow quality settings to influence random drops as intended
+- Provide a balanced approach for special drops where quality has a reduced effect
+- Ensure backward compatibility with existing save games
+- Maintain the core gameplay experience while adding customization options
+
+## Core Features
+
+### Special Drop Context System
+- Add a new drop context enum to differentiate special object drops
+- Implement reduced quality scaling for special drops
+- Ensure special objects always drop their intended item categories
+
+### Quality Scaling Configuration
+- Add configuration options for controlling quality impact on special drops
+- Implement a scaling factor to adjust how much quality affects special drops
+- Allow for fine-tuning of the balance between original behavior and customization
+
+### Technical Requirements
+- Modify the `GetItemIndexForDroppableItem` function to handle special drop contexts
+- Update `CreateTypeItem` and related functions to pass the appropriate context
+- Add new parameters to relevant functions without breaking existing functionality
+- Ensure all special object types (bookcases, weapon racks, armor stands, etc.) are properly handled
+- Maintain compatibility with multiplayer by ensuring consistent drop behavior
+
+## Success Criteria
+- Special objects always drop their intended item types (books from bookcases, etc.)
+- Quality settings have a reduced but noticeable effect on special drops
+- Random drops continue to be fully affected by quality settings
+- The system is configurable to allow for different balancing approaches
+- No regression in existing functionality
+
+## Implementation Phases
+1. Add Special Drop Context - Implement the core enum and context passing
+2. Modify Item Selection Logic - Update the item selection algorithm for special drops
+3. Update Special Object Functions - Modify all special object functions to use the new context
+4. Add Configuration Options - Implement scaling factors and configuration
+5. Testing and Balancing - Ensure the system works as intended across all game scenarios
