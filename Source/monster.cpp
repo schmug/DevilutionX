@@ -19,6 +19,7 @@
 #include <expected.hpp>
 #include <fmt/core.h>
 #include <fmt/format.h>
+#include "mods/config/drop_rate_config.h"
 
 #include "control.h"
 #include "crawl.hpp"

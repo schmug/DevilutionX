@@ -128,11 +128,13 @@ public:
 	// Getters
 	float GetMaxDropRateMultiplier() const { return _maxDropRateMultiplier; }
 	float GetMinDropRateMultiplier() const { return _minDropRateMultiplier; }
+	float GetSpecialObjectQualityScalingFactor() const { return _specialObjectQualityScalingFactor; }
 	const std::vector<DropRateModifier>& GetModifiers() const { return _modifiers; }
 
 	// Setters for testing
 	void SetMaxDropRateMultiplier(float value) { _maxDropRateMultiplier = value; }
 	void SetMinDropRateMultiplier(float value) { _minDropRateMultiplier = value; }
+	void SetSpecialObjectQualityScalingFactor(float value) { _specialObjectQualityScalingFactor = value; }
 	void SetModifiers(const std::vector<DropRateModifier>& value) { _modifiers = value; }
 	void AddModifier(const DropRateModifier& modifier) { _modifiers.push_back(modifier); }
 	void ClearModifiers() { _modifiers.clear(); }
@@ -148,6 +150,7 @@ private:
 	std::vector<DropRateModifier> _modifiers;
 	float _maxDropRateMultiplier = 10.0f;  // Maximum allowed multiplier (safeguard)
 	float _minDropRateMultiplier = 0.1f;   // Minimum allowed multiplier (safeguard)
+	float _specialObjectQualityScalingFactor = 0.25f; // Scaling factor for quality effects on special object drops
 
 	// Helper methods for loading config
 	bool ParseModifierFromJson(const std::string& jsonString, DropRateModifier& modifier);

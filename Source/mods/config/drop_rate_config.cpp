@@ -43,6 +43,7 @@ void DropRateConfig::ResetToDefault()
 	_modifiers.clear();
 	_maxDropRateMultiplier = 10.0f;
 	_minDropRateMultiplier = 0.1f;
+	_specialObjectQualityScalingFactor = 0.25f;
 	
 	// Add default modifiers if needed
 	// For example, a small global boost to unique item drop rates
@@ -82,6 +83,10 @@ bool DropRateConfig::LoadFromFile(const std::string& filePath, bool validate)
 			
 			if (configJson.contains("minDropRateMultiplier")) {
 				_minDropRateMultiplier = configJson["minDropRateMultiplier"].get<float>();
+			}
+			
+			if (configJson.contains("specialObjectQualityScalingFactor")) {
+				_specialObjectQualityScalingFactor = configJson["specialObjectQualityScalingFactor"].get<float>();
 			}
 			
 			// Load modifiers
@@ -303,6 +308,7 @@ bool DropRateConfig::SaveToFile(const std::string& filePath) const
 		// Add global settings
 		configJson["maxDropRateMultiplier"] = _maxDropRateMultiplier;
 		configJson["minDropRateMultiplier"] = _minDropRateMultiplier;
+		configJson["specialObjectQualityScalingFactor"] = _specialObjectQualityScalingFactor;
 		
 		// Add modifiers array
 		nlohmann::json modifiersArray = nlohmann::json::array();
@@ -448,6 +454,7 @@ bool DropRateConfig::CreateDefaultConfig(const std::string& filePath) const
 		// Add global settings
 		configJson["maxDropRateMultiplier"] = 10.0f;
 		configJson["minDropRateMultiplier"] = 0.1f;
+		configJson["specialObjectQualityScalingFactor"] = 0.25f;
 		
 		// Create default modifiers
 		nlohmann::json modifiersArray = nlohmann::json::array();

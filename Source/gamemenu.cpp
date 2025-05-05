@@ -206,6 +206,7 @@ TMenuItem sgDropRateMenu[] = {
 	{ GMENU_ENABLED | GMENU_SLIDER, N_("Item Drop Rate"),    &GamemenuItemDropRate },
 	{ GMENU_ENABLED               , N_("Item Type"),        &GamemenuItemType     },
 	{ GMENU_ENABLED | GMENU_SLIDER, N_("Item Quality"),     &GamemenuItemQuality  },
+	{ GMENU_ENABLED | GMENU_SLIDER, N_("Special Object Quality"), &GamemenuSpecialObjectQuality },
 	{ GMENU_ENABLED               , N_("Reset to Default"), &GamemenuResetDropRates },
 	{ GMENU_ENABLED               , N_("Previous Menu"),    &GamemenuPrevious     },
 	{ GMENU_ENABLED               , nullptr,                nullptr               },
@@ -236,6 +237,8 @@ int GamemenuSliderItemQuality()
 {
 	return gmenu_slider_get(&sgDropRateMenu[4], 0, 100);
 }
+
+
 
 void GamemenuOptions(bool /*bActivate*/)
 {
@@ -485,6 +488,8 @@ void GamemenuGetItemQuality()
 	LogInfo("GamemenuGetItemQuality: Current item quality is {}%", currentQuality);
 }
 
+
+
 // Handler for the Item Drop Rate slider
 void GamemenuItemDropRate(bool bActivate)
 {
@@ -550,9 +555,19 @@ void GamemenuItemQuality(bool bActivate)
 	// Update the slider
 	GamemenuGetItemQuality();
 	
-	// Play a sound effect for feedback
-	PlaySFX(SfxID::MenuMove);
+	if (!bActivate) {
+		return;
+	}
+	
+	int quality = GamemenuSliderItemQuality();
+	auto& dropRateManager = DropRateManager::getInstance();
+	dropRateManager.SetItemQualityPercent(quality);
+	
+	// Log the new quality for debugging
+	LogInfo("GamemenuItemQuality: Set item quality to {}%", quality);
 }
+
+
 
 // Handler for the Reset to Default button
 void GamemenuResetDropRates(bool bActivate)
@@ -570,6 +585,7 @@ void GamemenuResetDropRates(bool bActivate)
 	GamemenuGetItemDropRate();
 	GamemenuGetItemType();
 	GamemenuGetItemQuality();
+	GamemenuGetSpecialObjectQuality();
 	
 	// Log the reset
 	LogInfo("GamemenuResetDropRates: Reset drop rates to defaults");
@@ -582,6 +598,42 @@ void GamemenuResetDropRates(bool bActivate)
 }
 
 } // namespace
+
+// Implementation of helper functions in the global namespace
+void GamemenuGetSpecialObjectQuality()
+{
+	auto& manager = DropRateManager::getInstance();
+	int currentFactor = manager.GetSpecialObjectQualityScalingFactor();
+	
+	// Set the slider to the current value
+	gmenu_slider_steps(&sgDropRateMenu[5], 100);
+	gmenu_slider_set(&sgDropRateMenu[5], 0, 100, currentFactor);
+	
+	// Log the current factor for debugging
+	LogInfo("GamemenuGetSpecialObjectQuality: Current special object quality scaling factor is {}%", currentFactor);
+}
+
+int GamemenuSliderSpecialObjectQuality()
+{
+	return gmenu_slider_get(&sgDropRateMenu[5], 0, 100);
+}
+
+// Handler for the Special Object Quality slider
+void GamemenuSpecialObjectQuality(bool bActivate)
+{
+	GamemenuGetSpecialObjectQuality();
+	
+	if (!bActivate) {
+		return;
+	}
+	
+	int factor = GamemenuSliderSpecialObjectQuality();
+	auto& dropRateManager = DropRateManager::getInstance();
+	dropRateManager.SetSpecialObjectQualityScalingFactor(factor);
+	
+	// Log the new factor for debugging
+	LogInfo("GamemenuSpecialObjectQuality: Set special object quality scaling factor to {}%", factor);
+}
 
 void gamemenu_exit_game(bool bActivate)
 {

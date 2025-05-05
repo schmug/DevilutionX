@@ -37,6 +37,7 @@ DropRateManager::DropRateManager()
     } else {
         LogVerbose("Using default drop rate settings");
         LogVerbose("Default gold drop rate: {}%", goldDropRatePercent);
+        LogVerbose("Default special object quality scaling factor: {}%", specialObjectQualityScalingFactor);
     }
 }
 
@@ -61,9 +62,17 @@ void DropRateManager::ResetDropRatesToDefaults()
     // Reset gold drop rate to default
     goldDropRatePercent = 20;
     
+    // Reset special object quality scaling factor to default
+    specialObjectQualityScalingFactor = 25;
+    
+    // Reset item quality and item drop rate to defaults
+    itemQualityPercent = 50;
+    itemDropRatePercent = 80;
+    
     // Log the reset
     LogVerbose("Drop rates reset to defaults");
     LogVerbose("Gold drop rate: {}%", goldDropRatePercent);
+    LogVerbose("Special object quality scaling factor: {}%", specialObjectQualityScalingFactor);
     
     // Save the default settings
     SaveSettings();
@@ -126,6 +135,9 @@ bool DropRateManager::SaveSettingsToJson(const std::string& filePath)
         // Create a JSON object with the settings
         nlohmann::json settings;
         settings["goldDropRatePercent"] = goldDropRatePercent;
+        settings["specialObjectQualityScalingFactor"] = specialObjectQualityScalingFactor;
+        settings["itemQualityPercent"] = itemQualityPercent;
+        settings["itemDropRatePercent"] = itemDropRatePercent;
         
         // Write the JSON to a file
         std::ofstream file(filePath);
@@ -169,6 +181,42 @@ bool DropRateManager::LoadSettingsFromJson(const std::string& filePath)
                 LogWarning("Invalid gold drop rate in settings file: {}", goldDropRatePercent);
                 goldDropRatePercent = std::clamp(goldDropRatePercent, 0, 100);
                 LogWarning("Clamped to valid range: {}", goldDropRatePercent);
+            }
+        }
+        
+        // Load special object quality scaling factor
+        if (settings.contains("specialObjectQualityScalingFactor")) {
+            specialObjectQualityScalingFactor = settings["specialObjectQualityScalingFactor"];
+            
+            // Validate the scaling factor
+            if (specialObjectQualityScalingFactor < 0 || specialObjectQualityScalingFactor > 100) {
+                LogWarning("Invalid special object quality scaling factor in settings file: {}", specialObjectQualityScalingFactor);
+                specialObjectQualityScalingFactor = std::clamp(specialObjectQualityScalingFactor, 0, 100);
+                LogWarning("Clamped to valid range: {}", specialObjectQualityScalingFactor);
+            }
+        }
+        
+        // Load item quality percent
+        if (settings.contains("itemQualityPercent")) {
+            itemQualityPercent = settings["itemQualityPercent"];
+            
+            // Validate the item quality
+            if (itemQualityPercent < 0 || itemQualityPercent > 100) {
+                LogWarning("Invalid item quality in settings file: {}", itemQualityPercent);
+                itemQualityPercent = std::clamp(itemQualityPercent, 0, 100);
+                LogWarning("Clamped to valid range: {}", itemQualityPercent);
+            }
+        }
+        
+        // Load item drop rate percent
+        if (settings.contains("itemDropRatePercent")) {
+            itemDropRatePercent = settings["itemDropRatePercent"];
+            
+            // Validate the item drop rate
+            if (itemDropRatePercent < 0 || itemDropRatePercent > 100) {
+                LogWarning("Invalid item drop rate in settings file: {}", itemDropRatePercent);
+                itemDropRatePercent = std::clamp(itemDropRatePercent, 0, 100);
+                LogWarning("Clamped to valid range: {}", itemDropRatePercent);
             }
         }
         

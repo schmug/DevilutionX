@@ -14,6 +14,7 @@
 #include <expected.hpp>
 #include <fmt/core.h>
 
+#include "mods/config/drop_rate_config.h"
 #include "DiabloUI/ui_flags.hpp"
 #include "automap.h"
 #include "cursor.h"

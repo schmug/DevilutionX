@@ -149,6 +149,29 @@ public:
 	}
 	
 	/**
+	 * @brief Get the current special object quality scaling factor percentage
+	 * @return The special object quality scaling factor percentage (0-100)
+	 */
+	int GetSpecialObjectQualityScalingFactor() const { return specialObjectQualityScalingFactor; }
+	
+	/**
+	 * @brief Set the special object quality scaling factor percentage
+	 * @param factor The special object quality scaling factor percentage (0-100)
+	 */
+	void SetSpecialObjectQualityScalingFactor(int factor)
+	{
+		// Clamp the value to 0-100 range
+		if (factor < 0) factor = 0;
+		if (factor > 100) factor = 100;
+		
+		// Set the value
+		specialObjectQualityScalingFactor = factor;
+		
+		// Log the change
+		LogVerbose("Special object quality scaling factor set to {}%", specialObjectQualityScalingFactor);
+	}
+	
+	/**
 	 * @brief Reset all drop rates to default values
 	 */
 	void ResetDropRatesToDefaults()
@@ -168,12 +191,16 @@ public:
 		// Reset item quality to default
 		itemQualityPercent = 50;
 		
+		// Reset special object quality scaling factor to default
+		specialObjectQualityScalingFactor = 25;
+		
 		LogVerbose("Drop rates reset to defaults");
 		LogVerbose("Gold drop rate: {}%", goldDropRatePercent);
 		LogVerbose("Gold amount: {}%", goldAmountPercent);
 		LogVerbose("Item drop rate: {}%", itemDropRatePercent);
 		LogVerbose("Item type preference: {}", static_cast<int>(itemTypePreference));
 		LogVerbose("Item quality: {}%", itemQualityPercent);
+		LogVerbose("Special object quality scaling factor: {}%", specialObjectQualityScalingFactor);
 		
 		// Note: We've removed the SaveSettings call for now to focus on core functionality
 	}
@@ -246,6 +273,7 @@ private:
 	int itemDropRatePercent = 60; // Default 60% item drop rate
 	ItemType itemTypePreference = ItemType::Normal; // Default normal item type preference
 	int itemQualityPercent = 50; // Default 50% item quality
+	int specialObjectQualityScalingFactor = 25; // Default 25% special object quality scaling factor
 	
 	// Configuration loading and saving
 	bool LoadConfig(const std::string& configPath, DropRateConfig& config);

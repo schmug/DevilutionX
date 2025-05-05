@@ -55,6 +55,16 @@ public:
         LogInfo("Item drop rate set to {}%", settings.GetItemDropRate());
     }
     
+    // Convenience methods for special object quality scaling factor
+    int GetSpecialObjectQualityScalingFactor() const {
+        return settings.GetSpecialObjectQualityScalingFactor();
+    }
+    
+    void SetSpecialObjectQualityScalingFactor(int factor) {
+        settings.SetSpecialObjectQualityScalingFactor(factor);
+        LogInfo("Special object quality scaling factor set to {}%", settings.GetSpecialObjectQualityScalingFactor());
+    }
+    
     // Reset to default values
     void ResetToDefaults() {
         settings = DropRateSettings(); // Use default constructor values

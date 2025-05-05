@@ -18,6 +18,7 @@
 #include "DiabloUI/ui_flags.hpp"
 #include "mods/drop_rate_modifier.h"
 #include "gamemenu.h"
+#include "minitext.h"
 #include "controls/control_mode.hpp"
 #include "controls/plrctrls.h"
 #include "cursor.h"
@@ -35,10 +36,12 @@
 #include "inv_iterators.hpp"
 #include "levels/tile_properties.hpp"
 #include "levels/town.h"
+#include "items.h"
 #include "lighting.h"
-#include "minitext.h"
 #include "missiles.h"
 #include "options.h"
+#include "player.h"
+#include "mods/config/drop_rate_config.h"
 #include "panels/info_box.hpp"
 #include "panels/ui_panels.hpp"
 #include "player.h"
@@ -1511,9 +1514,10 @@ _item_indexes GetItemIndexForDroppableItem(bool considerDropRate, tl::function_r
 			// For special object drops, we apply a reduced quality scaling factor
 			float qualityScalingFactor = 1.0f;
 			if (context == DropRateContext::SpecialObjectDrop) {
-				// Use a reduced effect (25%) for special object drops to maintain original behavior
-				qualityScalingFactor = 0.25f;
-				LogVerbose("Special object drop detected - applying reduced quality scaling factor: {}", qualityScalingFactor);
+				// Get the configured scaling factor for special object drops from the DropRateManager
+				int scalingFactorPercent = dropRateManager.GetSpecialObjectQualityScalingFactor();
+				qualityScalingFactor = static_cast<float>(scalingFactorPercent) / 100.0f;
+				LogVerbose("Special object drop detected - applying configured quality scaling factor: {}%", scalingFactorPercent);
 			}
 			
 			if (itemQualityPercent > 50) {

@@ -20,7 +20,15 @@ void gamemenu_save_game(bool bActivate);
 void GamemenuDropRateModifiers(bool bActivate);
 void GamemenuGoldDropRate(bool bActivate);
 void GamemenuGoldAmount(bool bActivate);
+void GamemenuItemDropRate(bool bActivate);
+void GamemenuItemType(bool bActivate);
+void GamemenuItemQuality(bool bActivate);
+void GamemenuSpecialObjectQuality(bool bActivate);
 void GamemenuResetDropRates(bool bActivate);
+
+// Helper functions for drop rate menu
+void GamemenuGetSpecialObjectQuality();
+int GamemenuSliderSpecialObjectQuality();
 
 // Legacy drop rate adjustment functions (to be deprecated)
 void HandleDropRateKeyPress(int key);
