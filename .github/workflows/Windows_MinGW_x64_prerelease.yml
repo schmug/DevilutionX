@@ -32,7 +32,7 @@ jobs:
       run: cmake --build build -j $(nproc) --target package
 
     - name: Upload-Package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: devilutionx_x64.zip
         path: build/devilutionx.zip
